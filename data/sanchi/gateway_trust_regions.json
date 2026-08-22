@@ -1,0 +1,33 @@
+{
+  "pair_id": "gateway_front_1863_2015",
+  "source_metadata": {
+    "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+    "modern_source": "sanchi_sm01_2015.jpg"
+  },
+  "regions": [
+    {
+      "region_id": "eastern_torana",
+      "label": "eastern gateway / torana",
+      "box_rel": [0.14, 0.08, 0.77, 0.88],
+      "landmark_fallback": ["torana pillar bases", "crossbar ends", "central relief panels"]
+    },
+    {
+      "region_id": "torana_crossbars",
+      "label": "torana crossbars and relief panels",
+      "box_rel": [0.16, 0.10, 0.75, 0.58],
+      "landmark_fallback": ["crossbar corners", "relief-panel boundaries"]
+    },
+    {
+      "region_id": "stupa_background",
+      "label": "stupa and background beyond gateway",
+      "box_rel": [0.52, 0.20, 1.00, 0.88],
+      "landmark_fallback": ["railing line", "stupa contour"]
+    },
+    {
+      "region_id": "sky_and_archival_border",
+      "label": "sky and archival page border",
+      "box_rel": [0.00, 0.00, 1.00, 0.16],
+      "landmark_fallback": ["not applicable"]
+    }
+  ]
+}

@@ -360,19 +360,21 @@ def run(args: argparse.Namespace) -> int:
     torch.manual_seed(args.seed)
 
     root = Path(args.repo_root)
-    data_dir = root / "data" / "humayun" / "pairs" / "pair02_archA_wide_front"
-    out_dir = root / "outputs" / "registration" / "trust_region_pair02"
+    data_dir = Path(args.data_dir) if args.data_dir else root / "data" / "humayun" / "pairs" / "pair02_archA_wide_front"
+    out_dir = Path(args.output_dir) if args.output_dir else root / "outputs" / "registration" / "trust_region_pair02"
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    pair_metrics_path = (
-        root
-        / "outputs"
-        / "registration"
-        / "loftr_pairs"
-        / "pair02_archA_wide_front"
-        / "metrics.json"
+    pair_metrics_path = Path(args.pair_metrics) if args.pair_metrics else (
+        root / "outputs" / "registration" / "loftr_pairs" / "pair02_archA_wide_front" / "metrics.json"
     )
     prior_metrics = json.loads(pair_metrics_path.read_text(encoding="utf-8"))
+
+    region_config = None
+    if args.regions_json:
+        region_config = json.loads(Path(args.regions_json).read_text(encoding="utf-8"))
+    region_specs = region_config.get("regions", REGIONS) if region_config else REGIONS
+    pair_id = region_config.get("pair_id", args.pair_id) if region_config else args.pair_id
+    source_metadata = (region_config.get("source_metadata", {}) if region_config else {})
 
     archival_path = data_dir / "archival.jpg"
     modern_path = data_dir / "modern.jpg"
@@ -440,7 +442,7 @@ def run(args: argparse.Namespace) -> int:
             args.ransac_threshold,
             args.max_iters,
         )
-        for spec in REGIONS
+        for spec in region_specs
     ]
 
     cells = []
@@ -484,12 +486,12 @@ def run(args: argparse.Namespace) -> int:
         "experiment": "bounded_local_geometry_trust_region_registration",
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "input_pair": {
-            "pair_id": "pair02_archA_wide_front",
+            "pair_id": pair_id,
             "archival_file": str(archival_path),
             "modern_file": str(modern_path),
             "source_from_multi_pair_metadata": {
-                "archival_source": "archival.jpg",
-                "modern_source": "in_Delhi-Front_view.jpg",
+                "archival_source": source_metadata.get("archival_source", "archival.jpg"),
+                "modern_source": source_metadata.get("modern_source", "in_Delhi-Front_view.jpg"),
             },
         },
         "implementation": {
@@ -563,7 +565,7 @@ def run(args: argparse.Namespace) -> int:
         "",
         f"Generated: {payload['timestamp_utc']}",
         "",
-        "Input: `pair02_archA_wide_front` (`archival.jpg` vs `modern.jpg`, source modern `in_Delhi-Front_view.jpg`).",
+        f"Input: `{pair_id}` (`archival.jpg` vs `modern.jpg`, source modern `{payload['input_pair']['source_from_multi_pair_metadata']['modern_source']}`).",
         "",
         "## Global reproduction",
         "",
@@ -616,6 +618,11 @@ def main() -> int:
         description="Bounded local geometry / trust-region analysis for pair02."
     )
     parser.add_argument("--repo-root", default=str(repo_root))
+    parser.add_argument("--data-dir", help="Pair directory containing archival.jpg and modern.jpg.")
+    parser.add_argument("--output-dir", help="Additive output directory for this trust-region run.")
+    parser.add_argument("--pair-metrics", help="Metrics JSON from the corresponding validated LoFTR run.")
+    parser.add_argument("--pair-id", default="pair02_archA_wide_front")
+    parser.add_argument("--regions-json", help="Optional JSON defining pair metadata and bounded region specs.")
     parser.add_argument("--max-dim", type=int, default=840)
     parser.add_argument("--conf-threshold", type=float, default=DEFAULT_CONFIDENCE_THRESHOLD)
     parser.add_argument("--device", choices=["auto", "cpu", "cuda"], default="auto")

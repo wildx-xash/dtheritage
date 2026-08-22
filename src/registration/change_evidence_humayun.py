@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import time
+import argparse
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -150,15 +151,20 @@ def coarse_change_type(
     return "uncertain_visual_difference"
 
 
-def run() -> int:
+def run(args: argparse.Namespace) -> int:
     t0 = time.perf_counter()
     root = Path(__file__).resolve().parents[2]
-    trust_dir = root / "outputs" / "registration" / "trust_region_pair02"
-    out_dir = root / "outputs" / "change_evidence" / "humayun"
+    trust_dir = Path(args.trust_dir) if args.trust_dir else root / "outputs" / "registration" / "trust_region_pair02"
+    out_dir = Path(args.output_dir) if args.output_dir else root / "outputs" / "change_evidence" / "humayun"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     trust_metrics_path = trust_dir / "trust_region_metrics.json"
     trust = json.loads(trust_metrics_path.read_text(encoding="utf-8"))
+    supplied_provenance = (
+        json.loads(Path(args.provenance_json).read_text(encoding="utf-8"))
+        if args.provenance_json
+        else {}
+    )
 
     modern_path = Path(trust["input_pair"]["modern_file"])
     archival_path = Path(trust["input_pair"]["archival_file"])
@@ -235,11 +241,11 @@ def run() -> int:
         gradient_agreement = float((grad_signal[comp] > 0).mean())
         signal_agreement = float(((grad_signal[comp] > 0) | (edge_signal[comp] > 0)).mean())
         green_overlap = float((vegetation_mask[comp] > 0).mean())
-        foreground_risk = bool(region["region_id"] == "arcade" and y + h >= 255)
+        foreground_risk = bool(args.foreground_region and region["region_id"] == args.foreground_region and y + h >= 255)
         strength = evidence_strength(
             area, mean_diff, signal_agreement, region["trust_tier"], foreground_risk
         )
-        uncertainty = []
+        uncertainty = list(args.base_uncertainty)
         if region["trust_tier"] == "LOCALLY_RECOVERABLE":
             uncertainty.append("local_registration_recoverable_not_primary_global_trust")
         if foreground_risk:
@@ -251,11 +257,11 @@ def run() -> int:
         if x <= 5 or y <= 5 or x + w >= combined.shape[1] - 5 or y + h >= combined.shape[0] - 5:
             uncertainty.append("near_valid_mask_or_image_boundary")
 
-        candidate_id = f"HUMAYUN_CE_{len(candidates) + 1:03d}"
+        candidate_id = f"{args.candidate_prefix}_{len(candidates) + 1:03d}"
         candidates.append(
             {
                 "candidate_id": candidate_id,
-                "monument": "Humayun's Tomb",
+                "monument": args.monument,
                 "archival_image": archival_path.name,
                 "modern_image": modern_path.name,
                 "registration_experiment_id": trust["experiment"],
@@ -298,18 +304,19 @@ def run() -> int:
                 "provenance": {
                     "archival_file": str(archival_path),
                     "archival_source": trust["input_pair"]["source_from_multi_pair_metadata"].get("archival_source"),
-                    "archival_date": None,
-                    "archival_author": None,
-                    "archival_source_url": None,
-                    "archival_license": None,
+                    "archival_date": supplied_provenance.get("archival", {}).get("year_date"),
+                    "archival_author": supplied_provenance.get("archival", {}).get("photographer"),
+                    "archival_source_url": supplied_provenance.get("archival", {}).get("source_url"),
+                    "archival_license": supplied_provenance.get("archival", {}).get("license"),
                     "modern_file": str(modern_path),
                     "modern_source": trust["input_pair"]["source_from_multi_pair_metadata"].get("modern_source"),
-                    "modern_date": None,
-                    "modern_source_url": None,
-                    "modern_license": None,
+                    "modern_date": supplied_provenance.get("modern", {}).get("year_date"),
+                    "modern_author": supplied_provenance.get("modern", {}).get("photographer"),
+                    "modern_source_url": supplied_provenance.get("modern", {}).get("source_url"),
+                    "modern_license": supplied_provenance.get("modern", {}).get("license"),
                     "trust_region_metrics": str(trust_metrics_path),
                     "registered_archival_image": str(registered_path),
-                    "change_analysis_method_version": "change_evidence_humayun_v1",
+                    "change_analysis_method_version": args.method_version,
                 },
             }
         )
@@ -346,7 +353,7 @@ def run() -> int:
     valid_area = int((valid_mask > 0).sum())
     flagged_area = int((combined > 0).sum())
     summary = {
-        "experiment": "candidate_visible_change_evidence_humayun",
+        "experiment": f"candidate_visible_change_evidence_{args.monument_id}",
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "decision": "CHANGE_EVIDENCE_PIPELINE_VIABLE" if 0 < len(candidates) <= MAX_CANDIDATES else "CHANGE_EVIDENCE_METHOD_NEEDS_REVISION",
         "inputs": {
@@ -410,9 +417,7 @@ def run() -> int:
             for r in allowed_regions
         },
         "manual_inspection_notes": [
-            "Candidates overlapping hedges/trees are suppressed where detected, but vegetation and tourist occlusion can still leak into facade-region candidates.",
-            "Manual overlay inspection found the strongest false-positive risk along the lower arcade / hedge / people foreground band; those candidates are explicitly marked with foreground_hedge_or_people_occlusion_zone.",
-            "Dome and ground/reflection are intentionally excluded from candidate evidence despite visible differences.",
+            "Candidates overlapping hedges/trees are suppressed where detected, but vegetation and visitor occlusion can still leak into architectural candidates.",
             "Candidate categories are coarse proposals for human review, not damage labels.",
         ],
         "candidates": candidates,
@@ -429,7 +434,7 @@ def run() -> int:
     (out_dir / "candidate_evidence.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
     lines = [
-        "# Candidate visible-change evidence - Humayun's Tomb",
+        f"# Candidate visible-change evidence - {args.monument}",
         "",
         f"Generated: {summary['timestamp_utc']}",
         "",
@@ -465,4 +470,15 @@ def run() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(run())
+    repo_root = Path(__file__).resolve().parents[2]
+    parser = argparse.ArgumentParser(description="Bounded candidate visible-change evidence extraction.")
+    parser.add_argument("--trust-dir", help="Trust-region output directory containing trust_region_metrics.json.")
+    parser.add_argument("--output-dir", help="Additive candidate-evidence output directory.")
+    parser.add_argument("--monument", default="Humayun's Tomb")
+    parser.add_argument("--monument-id", default="humayun")
+    parser.add_argument("--candidate-prefix", default="HUMAYUN_CE")
+    parser.add_argument("--method-version", default="change_evidence_humayun_v1")
+    parser.add_argument("--foreground-region", default="arcade", help="Optional region ID associated with foreground risk.")
+    parser.add_argument("--provenance-json", help="Optional archival/modern provenance object from a supplied manifest.")
+    parser.add_argument("--base-uncertainty", action="append", default=[], help="Repeatable uncertainty indicator applied to every candidate in a run.")
+    raise SystemExit(run(parser.parse_args()))
