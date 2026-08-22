@@ -10,6 +10,7 @@ handoff package for integration teammates.
 from __future__ import annotations
 
 import json
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -32,6 +33,18 @@ from change_evidence_humayun import (
 
 def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def require_fields(payload: dict, fields: set[str], label: str) -> None:
+    missing = sorted(field for field in fields if field not in payload)
+    if missing:
+        raise ValueError(f"{label} is missing required fields: {', '.join(missing)}")
+
+
+def require_decision(payload: dict, expected: str, label: str) -> None:
+    actual = payload.get("decision") or payload.get("final_decision") or payload.get("technical_conclusion")
+    if actual != expected:
+        raise ValueError(f"{label} decision is {actual!r}, expected {expected!r}")
 
 
 def write_json(path: Path, payload: dict) -> None:
@@ -121,6 +134,15 @@ def main() -> int:
     ranking = read_json(root / "outputs/registration/loftr_pairs/final_ranking.json")
     trust = read_json(root / "outputs/registration/trust_region_pair02/trust_region_metrics.json")
     change = read_json(root / "outputs/change_evidence/humayun/candidate_evidence.json")
+    require_fields(loftr, {"status", "correspondences", "ransac"}, "LoFTR baseline")
+    require_fields(pair02, {"status", "correspondences", "ransac", "geometric_error"}, "Humayun best pair")
+    require_decision(ranking, "LOCAL_GEOMETRY_STILL_REQUIRED", "Humayun multi-pair ranking")
+    require_decision(trust, "BOUNDED_REGISTRATION_SUFFICIENT_FOR_CHANGE_EVIDENCE", "Humayun trust-region output")
+    require_decision(change, "CHANGE_EVIDENCE_PIPELINE_VIABLE", "Humayun change-evidence output")
+    if loftr["status"] != "success" or pair02["status"] != "success":
+        raise ValueError("Humayun audit requires successful baseline and best-pair registration metrics.")
+    if change.get("candidate_count", 0) < 1 or not change.get("candidates"):
+        raise ValueError("Humayun audit requires at least one candidate evidence record.")
 
     sensitivity = [
         sensitivity_run(root, d, g)
@@ -296,4 +318,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except (OSError, ValueError, json.JSONDecodeError, KeyError) as error:
+        print(f"AUDIT FAILED: {error}", file=sys.stderr)
+        raise SystemExit(2)

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import argparse
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -26,8 +28,21 @@ def read(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def require_fields(payload: dict, fields: set[str], label: str) -> None:
+    missing = sorted(field for field in fields if field not in payload)
+    if missing:
+        raise ValueError(f"{label} is missing required fields: {', '.join(missing)}")
+
+
+def require_decision(payload: dict, expected: str, label: str) -> None:
+    actual = payload.get("decision") or payload.get("final_decision") or payload.get("technical_conclusion")
+    if actual != expected:
+        raise ValueError(f"{label} decision is {actual!r}, expected {expected!r}")
+
+
 def row(pair_id: str, path: Path) -> dict:
     data = read(path)
+    require_fields(data, {"status", "correspondences", "timings_seconds"}, str(path))
     corr, ransac = data["correspondences"], data.get("ransac", {})
     hom, geo = data.get("homography", {}), data.get("geometric_error", {})
     return {
@@ -97,29 +112,18 @@ def sensitivity(trust_dir: Path) -> list[dict]:
     return result
 
 
-def main() -> int:
-    root = Path(__file__).resolve().parents[2]
-    sanchi_pairs = [
-        row(p, root / "outputs/registration/sanchi/loftr_pairs" / p / "metrics.json")
-        for p in ("gateway_front_1863_2015", "stupa_front_1880_2015", "stupa_front_1880_2013")
-    ]
-    qutb_pairs = [
-        row(p, root / "outputs/registration/qutb/loftr_pairs" / p / "metrics.json")
-        for p in ("tower_full_1858_2008", "tower_detail_1860_2015", "tower_full_1858_2017_negative")
-    ]
-    sanchi_trust_path = root / "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json"
-    sanchi_trust = read(sanchi_trust_path)
-    sanchi_change_path = root / "outputs/change_evidence/sanchi/candidate_evidence.json"
-    sanchi_change = read(sanchi_change_path)
-    qutb_output = root / "outputs/change_evidence/qutb"
-    qutb_output.mkdir(parents=True, exist_ok=True)
-    qutb_no_evidence = {
+def qutb_hard_case(root: Path, qutb_pairs: list[dict]) -> dict:
+    if any(pair["status"] == "success" for pair in qutb_pairs):
+        raise ValueError("Qutb hard-case export is invalid because a pair passed registration.")
+    if not all(pair["failure_reason"] for pair in qutb_pairs):
+        raise ValueError("Qutb hard-case export requires a recorded failure reason for every pair.")
+    return {
         "experiment": "candidate_visible_change_evidence_qutb",
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "decision": "NO_CHANGE_EVIDENCE_GENERATED",
         "monument": "Qutb Minar / Qutb Complex",
         "registration_gate": "No tested Qutb pair passed global homography validity; bounded local registration and change extraction were not attempted.",
-        "tested_registration_metrics": [r["metrics_path"] for r in qutb_pairs],
+        "tested_registration_metrics": [pair["metrics_path"] for pair in qutb_pairs],
         "candidate_count": 0,
         "candidate_counts_by_strength": {"HIGH_EVIDENCE": 0, "MEDIUM_EVIDENCE": 0, "LOW_EVIDENCE": 0},
         "candidates": [],
@@ -129,12 +133,43 @@ def main() -> int:
             "tower curvature, depth variation, and viewpoint difference require future human-guided local landmark input",
         ],
     }
+
+
+def main(qutb_only: bool = False) -> int:
+    root = Path(__file__).resolve().parents[2]
+    qutb_pairs = [
+        row(p, root / "outputs/registration/qutb/loftr_pairs" / p / "metrics.json")
+        for p in ("tower_full_1858_2008", "tower_detail_1860_2015", "tower_full_1858_2017_negative")
+    ]
+    qutb_no_evidence = qutb_hard_case(root, qutb_pairs)
+    qutb_output = root / "outputs/change_evidence/qutb"
+    qutb_output.mkdir(parents=True, exist_ok=True)
     (qutb_output / "candidate_evidence.json").write_text(json.dumps(qutb_no_evidence, indent=2) + "\n", encoding="utf-8")
+    if qutb_only:
+        print("QUTB_HARD_CASE_DOCUMENTED")
+        return 0
+
+    sanchi_pairs = [
+        row(p, root / "outputs/registration/sanchi/loftr_pairs" / p / "metrics.json")
+        for p in ("gateway_front_1863_2015", "stupa_front_1880_2015", "stupa_front_1880_2013")
+    ]
+    if sanchi_pairs[0]["status"] != "success":
+        raise ValueError("Sanchi gateway pair must pass registration before portfolio completion.")
+    sanchi_trust_path = root / "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json"
+    sanchi_trust = read(sanchi_trust_path)
+    require_decision(sanchi_trust, "BOUNDED_REGISTRATION_SUFFICIENT_FOR_CHANGE_EVIDENCE", "Sanchi trust-region output")
+    sanchi_change_path = root / "outputs/change_evidence/sanchi/candidate_evidence.json"
+    sanchi_change = read(sanchi_change_path)
+    require_decision(sanchi_change, "CHANGE_EVIDENCE_PIPELINE_VIABLE", "Sanchi change-evidence output")
+    if sanchi_change.get("candidate_count", 0) < 1 or not sanchi_change.get("candidates"):
+        raise ValueError("Sanchi change-evidence output contains no candidates.")
+    humayun_audit = read(root / "outputs/evaluation/person2_3_final/person2_3_final_audit.json")
+    require_decision(humayun_audit, "PERSON_2_AND_3_WORK_COMPLETE", "Humayun audit")
     payload = {
         "experiment": "three_monument_person2_person3_audit",
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "scope": "Person 2 Registration CV and Person 3 Change Intelligence only",
-        "humayun_reference": read(root / "outputs/evaluation/person2_3_final/person2_3_final_audit.json"),
+        "humayun_reference": humayun_audit,
         "sanchi": {
             "registration_pairs": sanchi_pairs,
             "best_pair": "gateway_front_1863_2015",
@@ -171,4 +206,10 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    parser = argparse.ArgumentParser(description="Validate and export three-monument Person 2/3 evidence.")
+    parser.add_argument("--qutb-only", action="store_true", help="Write and validate only the Qutb hard-case evidence export.")
+    try:
+        raise SystemExit(main(parser.parse_args().qutb_only))
+    except (OSError, ValueError, json.JSONDecodeError, KeyError) as error:
+        print(f"AUDIT FAILED: {error}", file=sys.stderr)
+        raise SystemExit(2)

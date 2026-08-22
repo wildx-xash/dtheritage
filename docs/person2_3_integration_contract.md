@@ -1,48 +1,40 @@
-# Person 2/3 CV Handoff Contract
+# Person 2/3 Integration Contract
 
-This document describes only the Registration CV and Change Intelligence output
-contract. It does not define or replace Person 4's backend/data architecture.
+This document defines only the Registration CV and Change Intelligence handoff.
+It does not define or replace Person 4's backend/data architecture.
 
-## Primary Output
+## Authoritative Review Exports
 
-Person 4/frontend integration should consume:
+Use the compact tracked artifacts when bulk `outputs/` are unavailable:
 
-- `outputs/change_evidence/humayun/candidate_evidence.json`
+| Monument | Candidate export | Registration context | Status |
+|---|---|---|---|
+| Humayun | `artifacts/verification/humayun/candidate_evidence.json` | `artifacts/verification/humayun/trust_region_metrics.json` | candidate evidence viable |
+| Sanchi | `artifacts/verification/sanchi/candidate_evidence.json` | `artifacts/verification/sanchi/trust_region_metrics.json` | candidate evidence viable |
+| Qutb | `artifacts/verification/qutb/candidate_evidence.json` | `artifacts/verification/qutb/registration_metrics_full_height.json` | hard case; zero candidates by geometry gate |
 
-Each candidate contains:
+`artifacts/verification/three_monument/cross_monument_audit.json` is the
+portfolio-level summary. The matching generated paths live below `outputs/`
+and can be recreated with `src/registration/run_pipeline.py`.
 
-- `candidate_id`
-- `monument`
-- `archival_image`, `modern_image`
-- `registration_region`
-- `registration_trust`
-- `bbox_xywh_in_inference_image`
-- `change_type`
-- `evidence_strength`
-- `uncertainty_indicators`
-- `signals`
-- `registration_support`
-- `provenance`
-- `review_status`
+## Candidate Record Fields
 
-## Registration Context
+Successful candidate exports use a common shape containing:
 
-Use these files to explain geometry and valid comparison area:
+- `candidate_id`, `monument`, `archival_image`, `modern_image`
+- `registration_region`, `registration_trust`,
+  `bbox_xywh_in_inference_image`
+- `change_type`, `evidence_strength`, `uncertainty_indicators`
+- `signals`, `registration_support`, `provenance`, `review_status`
 
-- `outputs/registration/loftr_pairs/comparison.json`
-- `outputs/registration/loftr_pairs/final_ranking.json`
-- `outputs/registration/trust_region_pair02/trust_region_metrics.json`
-- `outputs/registration/trust_region_pair02/02_trust_regions.jpg`
+Evidence strength is not a probability of physical damage. All candidate records
+remain pending human review.
 
-Only `TRUSTED` and validated `LOCALLY_RECOVERABLE` regions should be treated as
-valid comparison regions. `MARGINAL`, `UNTRUSTED`, and `UNSUPPORTED` regions are
-not valid change-evidence areas.
+## Visual Assets
 
-## Change Evidence Visuals
+- Humayun: `artifacts/verification/humayun/candidate_overlay.jpg`
+- Sanchi: `artifacts/verification/sanchi/candidate_overlay.jpg`
+- Qutb: `artifacts/verification/qutb/invalid_geometry_overlay.jpg`
 
-- `outputs/change_evidence/humayun/02_valid_comparison_mask.png`
-- `outputs/change_evidence/humayun/05_combined_change_signal.png`
-- `outputs/change_evidence/humayun/06_candidate_overlay.jpg`
-
-The output is candidate visible-change evidence for human review. It is not a
-damage diagnosis, structural assessment, or physical measurement.
+Qutb's zero-candidate export must be represented as a geometry-rejected hard
+case, not as no visible change or a successful registration.
