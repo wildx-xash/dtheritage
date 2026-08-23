@@ -8,6 +8,16 @@
 >
 > **Important:** The project is already past ideation and early feasibility. Do **not** restart from broad brainstorming or generic prior-art research unless a new technical result forces it.
 
+> **Current execution status (authoritative, 2026-08-22).** Person 2/3 work is
+> complete: Humayun reached `LOCAL_GEOMETRY_STILL_REQUIRED`, then
+> `BOUNDED_REGISTRATION_SUFFICIENT_FOR_CHANGE_EVIDENCE`, then
+> `CHANGE_EVIDENCE_PIPELINE_VIABLE`; Sanchi's gateway workflow is complete;
+> Qutb is a documented hard case with no permitted change evidence. Historical
+> "paused", "not started", and "next experiment" sections below are retained
+> as experiment history, not current instructions. Remaining work is team
+> integration: Person 4 backend/data consumption, Person 5 UI, and presentation
+> packaging. Do not redo completed Humayun experiments.
+
 ---
 
 # 1. Hackathon Context
@@ -287,7 +297,7 @@ There was a discussion about optionally version-controlling `metrics.json` while
 ## requirements cleanup
 
 - `requirements.txt` is now valid UTF-8 and contains direct dependencies.
-- an older `requirements-temp.txt` was UTF-16LE / full pip freeze and should be removed if still present.
+- the obsolete UTF-16LE `requirements-temp.txt` full freeze was removed; use the direct runtime dependencies in `requirements.txt`.
 
 ---
 
@@ -530,7 +540,7 @@ This is NOT yet a failure of the overall project.
 
 ---
 
-# 11. IMPORTANT: Current Next-Step Decision
+# 11. Historical Next-Step Decision (Superseded)
 
 Originally the next step was going to be:
 
@@ -581,7 +591,7 @@ Do NOT build a huge dataset.
 
 ---
 
-# 12. Metrics for Multi-Pair Comparison
+# 12. Historical Metrics Plan for Multi-Pair Comparison
 
 For every pair compare:
 
@@ -619,7 +629,7 @@ Use if all reasonable pairs still produce:
 
 ---
 
-# 13. Trust-Region Experiment — PAUSED, NOT DELETED
+# 13. Historical Trust-Region Plan (Completed)
 
 Claude previously started designing a trust-region experiment based on:
 
@@ -641,7 +651,7 @@ Therefore any future trust-region method must not assume every high-confidence R
 
 ---
 
-# 14. Change Detection — NOT STARTED YET
+# 14. Historical Change-Detection Plan (Completed)
 
 Do not implement change detection until registration support is sufficiently trustworthy.
 
@@ -913,7 +923,7 @@ This is far stronger than a generic “AI architecture” slide.
 
 ---
 
-# 22. Current Exact Next Action
+# 22. Historical Exact Next Action (Superseded)
 
 ## Do this next
 

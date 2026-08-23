@@ -1,0 +1,1052 @@
+{
+  "experiment": "bounded_local_geometry_trust_region_registration",
+  "timestamp_utc": "2026-08-21T20:09:45.203756+00:00",
+  "input_pair": {
+    "pair_id": "pair02_archA_wide_front",
+    "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+    "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+    "source_from_multi_pair_metadata": {
+      "archival_source": "archival.jpg",
+      "modern_source": "in_Delhi-Front_view.jpg"
+    }
+  },
+  "implementation": {
+    "library": "kornia",
+    "library_version": "0.8.3",
+    "torch_version": "2.13.0+cpu",
+    "device": "cpu",
+    "python": "3.12.3",
+    "opencv": "5.0.0",
+    "numpy": "2.5.2",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "parameters": {
+    "max_inference_dimension_px": 840,
+    "confidence_threshold": 0.5,
+    "ransac_method": "ransac",
+    "ransac_reproj_threshold_px": 3.0,
+    "ransac_max_iters": 10000,
+    "grid_cols": 8,
+    "grid_rows": 6,
+    "region_thresholds": {
+      "min_region_filtered": 12,
+      "min_region_inliers": 8,
+      "min_trusted_inliers": 30,
+      "max_trusted_rmse": 2.2,
+      "max_trusted_median": 1.8,
+      "max_marginal_rmse": 3.0,
+      "max_marginal_median": 2.5
+    }
+  },
+  "reproduced_global_result": {
+    "prior_metrics_path": "/home/radhika/Documents/dtheritage/outputs/registration/loftr_pairs/pair02_archA_wide_front/metrics.json",
+    "prior_filtered_count": 519,
+    "prior_inlier_count": 301,
+    "prior_inlier_ratio": 0.5799614643545279,
+    "filtered_count": 519,
+    "inlier_count": 301,
+    "inlier_ratio": 0.5799614643545279,
+    "geometric_error_over_inliers": {
+      "count": 301,
+      "mean_px": 1.5093762874603271,
+      "median_px": 1.4808509349822998,
+      "rmse_px": 1.6920244693756104,
+      "max_px": 2.9913477897644043
+    },
+    "geometric_error_over_all_filtered": {
+      "count": 519,
+      "mean_px": 6.3966498374938965,
+      "median_px": 2.4539783000946045,
+      "rmse_px": 13.827757835388184,
+      "max_px": 110.7984848022461
+    },
+    "overlap_fraction": 0.7330884232047022,
+    "ncc": 0.5348226027734408
+  },
+  "method_notes": [
+    "Trust is assigned from validated RANSAC inlier support, local residuals, and overlap diagnostics.",
+    "RANSAC-rejected LoFTR matches are not treated as physical parallax evidence.",
+    "Local homographies are attempted only inside named regions with enough filtered correspondences and must pass support and transform sanity gates.",
+    "This output identifies bounded comparison regions only; it does not perform change detection."
+  ],
+  "regions": [
+    {
+      "region_id": "central_facade_iwan",
+      "label": "central facade / iwan",
+      "box_px": [
+        269,
+        140,
+        571,
+        324
+      ],
+      "box_rel": [
+        0.32,
+        0.25,
+        0.68,
+        0.58
+      ],
+      "filtered_count": 269,
+      "global_inlier_count": 144,
+      "global_inlier_ratio_in_region": 0.5353159851301115,
+      "mean_inlier_confidence": 0.8814495801925659,
+      "inlier_hull_fraction_of_region": 0.35884532555888826,
+      "global_reprojection": {
+        "count": 144,
+        "mean_px": 1.502697467803955,
+        "median_px": 1.4309428930282593,
+        "rmse_px": 1.6453648805618286,
+        "max_px": 2.977982759475708
+      },
+      "global_ncc": 0.22171932354761095,
+      "local_transform": {
+        "attempted": true,
+        "estimated": true,
+        "valid": true,
+        "inlier_count": 163,
+        "inlier_ratio": 0.6059479553903345,
+        "errors_over_local_inliers": {
+          "count": 163,
+          "mean_px": 0.9750916361808777,
+          "median_px": 0.838392436504364,
+          "rmse_px": 1.1748331785202026,
+          "max_px": 2.9986495971679688
+        },
+        "condition_number": 18648.66830113751,
+        "warped_quad_is_convex": true,
+        "warped_quad_area_ratio_vs_modern": 1.1104651163561148,
+        "corner_w_all_same_sign": true,
+        "global_rmse_on_global_inliers": 1.6453648805618286,
+        "reason": "valid bounded transform"
+      },
+      "trust_tier": "TRUSTED",
+      "explanation": "global RMSE 1.65px; median 1.43px; bounded local homography passed sanity gates",
+      "human_guided_fallback_landmarks": [
+        "central iwan corners",
+        "gateway corners"
+      ]
+    },
+    {
+      "region_id": "arcade",
+      "label": "arcade / lower facade",
+      "box_px": [
+        50,
+        196,
+        790,
+        324
+      ],
+      "box_rel": [
+        0.06,
+        0.35,
+        0.94,
+        0.58
+      ],
+      "filtered_count": 93,
+      "global_inlier_count": 13,
+      "global_inlier_ratio_in_region": 0.13978494623655913,
+      "mean_inlier_confidence": 0.9185250997543335,
+      "inlier_hull_fraction_of_region": 0.005324668858336097,
+      "global_reprojection": {
+        "count": 13,
+        "mean_px": 1.8001497983932495,
+        "median_px": 1.883397102355957,
+        "rmse_px": 1.922361969947815,
+        "max_px": 2.8529694080352783
+      },
+      "global_ncc": 0.19493971296306056,
+      "local_transform": {
+        "attempted": true,
+        "estimated": true,
+        "valid": true,
+        "inlier_count": 81,
+        "inlier_ratio": 0.8709677419354839,
+        "errors_over_local_inliers": {
+          "count": 81,
+          "mean_px": 1.1635113954544067,
+          "median_px": 1.169287085533142,
+          "rmse_px": 1.313382863998413,
+          "max_px": 2.623677968978882
+        },
+        "condition_number": 36143.54452673958,
+        "warped_quad_is_convex": true,
+        "warped_quad_area_ratio_vs_modern": 1.4425572819517387,
+        "corner_w_all_same_sign": true,
+        "global_rmse_on_global_inliers": 1.922361969947815,
+        "reason": "valid bounded transform"
+      },
+      "trust_tier": "LOCALLY_RECOVERABLE",
+      "explanation": "global RMSE 1.92px; median 1.88px; bounded local homography passed sanity gates",
+      "human_guided_fallback_landmarks": [
+        "facade intersections",
+        "gateway corners"
+      ]
+    },
+    {
+      "region_id": "dome",
+      "label": "dome",
+      "box_px": [
+        353,
+        11,
+        487,
+        112
+      ],
+      "box_rel": [
+        0.42,
+        0.02,
+        0.58,
+        0.2
+      ],
+      "filtered_count": 53,
+      "global_inlier_count": 36,
+      "global_inlier_ratio_in_region": 0.6792452830188679,
+      "mean_inlier_confidence": 0.7669708132743835,
+      "inlier_hull_fraction_of_region": 0.24172905033371517,
+      "global_reprojection": {
+        "count": 36,
+        "mean_px": 1.1208909749984741,
+        "median_px": 0.9391892552375793,
+        "rmse_px": 1.326667070388794,
+        "max_px": 2.838362455368042
+      },
+      "global_ncc": 0.26742010774127506,
+      "local_transform": {
+        "attempted": true,
+        "estimated": true,
+        "valid": false,
+        "inlier_count": 38,
+        "inlier_ratio": 0.7169811320754716,
+        "errors_over_local_inliers": {
+          "count": 38,
+          "mean_px": 1.2919769287109375,
+          "median_px": 1.352842092514038,
+          "rmse_px": 1.4387727975845337,
+          "max_px": 2.87550950050354
+        },
+        "condition_number": 50816.92962485984,
+        "warped_quad_is_convex": false,
+        "warped_quad_area_ratio_vs_modern": 28.025671604794546,
+        "corner_w_all_same_sign": false,
+        "global_rmse_on_global_inliers": 1.326667070388794,
+        "reason": "local transform failed sanity/support gates"
+      },
+      "trust_tier": "MARGINAL",
+      "explanation": "global RMSE 1.33px; median 0.94px; local transform failed sanity/support gates",
+      "human_guided_fallback_landmarks": [
+        "dome apex",
+        "dome springing points"
+      ]
+    },
+    {
+      "region_id": "upper_structure_parapet",
+      "label": "upper structure / parapet",
+      "box_px": [
+        202,
+        101,
+        638,
+        201
+      ],
+      "box_rel": [
+        0.24,
+        0.18,
+        0.76,
+        0.36
+      ],
+      "filtered_count": 387,
+      "global_inlier_count": 271,
+      "global_inlier_ratio_in_region": 0.7002583979328165,
+      "mean_inlier_confidence": 0.8544968962669373,
+      "inlier_hull_fraction_of_region": 0.5349984692311616,
+      "global_reprojection": {
+        "count": 271,
+        "mean_px": 1.5151522159576416,
+        "median_px": 1.4808509349822998,
+        "rmse_px": 1.6969960927963257,
+        "max_px": 2.9913477897644043
+      },
+      "global_ncc": 0.4167074525467416,
+      "local_transform": {
+        "attempted": true,
+        "estimated": true,
+        "valid": true,
+        "inlier_count": 296,
+        "inlier_ratio": 0.7648578811369509,
+        "errors_over_local_inliers": {
+          "count": 296,
+          "mean_px": 1.1277822256088257,
+          "median_px": 0.958130955696106,
+          "rmse_px": 1.334168553352356,
+          "max_px": 2.9726784229278564
+        },
+        "condition_number": 19449.11932438924,
+        "warped_quad_is_convex": true,
+        "warped_quad_area_ratio_vs_modern": 1.119034351350928,
+        "corner_w_all_same_sign": true,
+        "global_rmse_on_global_inliers": 1.6969960927963257,
+        "reason": "valid bounded transform"
+      },
+      "trust_tier": "TRUSTED",
+      "explanation": "global RMSE 1.70px; median 1.48px; bounded local homography passed sanity gates",
+      "human_guided_fallback_landmarks": [
+        "parapet corners",
+        "facade intersections"
+      ]
+    },
+    {
+      "region_id": "ground_garden_reflection",
+      "label": "ground / garden / reflection",
+      "box_px": [
+        0,
+        391,
+        840,
+        559
+      ],
+      "box_rel": [
+        0.0,
+        0.7,
+        1.0,
+        1.0
+      ],
+      "filtered_count": 0,
+      "global_inlier_count": 0,
+      "global_inlier_ratio_in_region": null,
+      "mean_inlier_confidence": null,
+      "inlier_hull_fraction_of_region": 0.0,
+      "global_reprojection": null,
+      "global_ncc": -0.053732300762573744,
+      "local_transform": {
+        "attempted": false,
+        "reason": "insufficient filtered support"
+      },
+      "trust_tier": "UNSUPPORTED",
+      "explanation": "too few filtered correspondences; too few validated global inliers",
+      "human_guided_fallback_landmarks": [
+        "path edges",
+        "garden/terrace corners"
+      ]
+    }
+  ],
+  "grid_cells": [
+    {
+      "row": 0,
+      "col": 0,
+      "box_px": [
+        0,
+        0,
+        105,
+        93
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "box_px": [
+        105,
+        0,
+        210,
+        93
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "box_px": [
+        210,
+        0,
+        315,
+        93
+      ],
+      "filtered_count": 1,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "box_px": [
+        315,
+        0,
+        420,
+        93
+      ],
+      "filtered_count": 15,
+      "inlier_count": 1,
+      "trust_tier": "UNTRUSTED",
+      "global_reprojection": {
+        "count": 1,
+        "mean_px": 2.4926655292510986,
+        "median_px": 2.4926655292510986,
+        "rmse_px": 2.4926655292510986,
+        "max_px": 2.4926655292510986
+      }
+    },
+    {
+      "row": 0,
+      "col": 4,
+      "box_px": [
+        420,
+        0,
+        525,
+        93
+      ],
+      "filtered_count": 11,
+      "inlier_count": 7,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": {
+        "count": 7,
+        "mean_px": 1.4173612594604492,
+        "median_px": 1.5684510469436646,
+        "rmse_px": 1.5980970859527588,
+        "max_px": 2.289752960205078
+      }
+    },
+    {
+      "row": 0,
+      "col": 5,
+      "box_px": [
+        525,
+        0,
+        630,
+        93
+      ],
+      "filtered_count": 1,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 6,
+      "box_px": [
+        630,
+        0,
+        735,
+        93
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 7,
+      "box_px": [
+        735,
+        0,
+        840,
+        93
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 1,
+      "col": 0,
+      "box_px": [
+        0,
+        93,
+        105,
+        186
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 1,
+      "col": 1,
+      "box_px": [
+        105,
+        93,
+        210,
+        186
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "box_px": [
+        210,
+        93,
+        315,
+        186
+      ],
+      "filtered_count": 75,
+      "inlier_count": 45,
+      "trust_tier": "TRUSTED",
+      "global_reprojection": {
+        "count": 45,
+        "mean_px": 1.5604214668273926,
+        "median_px": 1.4353764057159424,
+        "rmse_px": 1.7631598711013794,
+        "max_px": 2.9913477897644043
+      }
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "box_px": [
+        315,
+        93,
+        420,
+        186
+      ],
+      "filtered_count": 125,
+      "inlier_count": 84,
+      "trust_tier": "TRUSTED",
+      "global_reprojection": {
+        "count": 84,
+        "mean_px": 1.1951781511306763,
+        "median_px": 1.1303796768188477,
+        "rmse_px": 1.3769365549087524,
+        "max_px": 2.9307258129119873
+      }
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "box_px": [
+        420,
+        93,
+        525,
+        186
+      ],
+      "filtered_count": 131,
+      "inlier_count": 102,
+      "trust_tier": "TRUSTED",
+      "global_reprojection": {
+        "count": 102,
+        "mean_px": 1.5108482837677002,
+        "median_px": 1.4451799392700195,
+        "rmse_px": 1.6862210035324097,
+        "max_px": 2.975776195526123
+      }
+    },
+    {
+      "row": 1,
+      "col": 5,
+      "box_px": [
+        525,
+        93,
+        630,
+        186
+      ],
+      "filtered_count": 50,
+      "inlier_count": 44,
+      "trust_tier": "MARGINAL",
+      "global_reprojection": {
+        "count": 44,
+        "mean_px": 1.9253121614456177,
+        "median_px": 2.108492374420166,
+        "rmse_px": 2.0323307514190674,
+        "max_px": 2.862496852874756
+      }
+    },
+    {
+      "row": 1,
+      "col": 6,
+      "box_px": [
+        630,
+        93,
+        735,
+        186
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 1,
+      "col": 7,
+      "box_px": [
+        735,
+        93,
+        840,
+        186
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 0,
+      "box_px": [
+        0,
+        186,
+        105,
+        280
+      ],
+      "filtered_count": 20,
+      "inlier_count": 0,
+      "trust_tier": "UNTRUSTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "box_px": [
+        105,
+        186,
+        210,
+        280
+      ],
+      "filtered_count": 6,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "box_px": [
+        210,
+        186,
+        315,
+        280
+      ],
+      "filtered_count": 8,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "box_px": [
+        315,
+        186,
+        420,
+        280
+      ],
+      "filtered_count": 21,
+      "inlier_count": 8,
+      "trust_tier": "UNTRUSTED",
+      "global_reprojection": {
+        "count": 8,
+        "mean_px": 1.4920856952667236,
+        "median_px": 1.5906150341033936,
+        "rmse_px": 1.608228087425232,
+        "max_px": 2.2562553882598877
+      }
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "box_px": [
+        420,
+        186,
+        525,
+        280
+      ],
+      "filtered_count": 37,
+      "inlier_count": 10,
+      "trust_tier": "UNTRUSTED",
+      "global_reprojection": {
+        "count": 10,
+        "mean_px": 2.0537164211273193,
+        "median_px": 2.1789040565490723,
+        "rmse_px": 2.1460399627685547,
+        "max_px": 2.8529694080352783
+      }
+    },
+    {
+      "row": 2,
+      "col": 5,
+      "box_px": [
+        525,
+        186,
+        630,
+        280
+      ],
+      "filtered_count": 11,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 6,
+      "box_px": [
+        630,
+        186,
+        735,
+        280
+      ],
+      "filtered_count": 3,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 7,
+      "box_px": [
+        735,
+        186,
+        840,
+        280
+      ],
+      "filtered_count": 3,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 0,
+      "box_px": [
+        0,
+        280,
+        105,
+        373
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "box_px": [
+        105,
+        280,
+        210,
+        373
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "box_px": [
+        210,
+        280,
+        315,
+        373
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "box_px": [
+        315,
+        280,
+        420,
+        373
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 4,
+      "box_px": [
+        420,
+        280,
+        525,
+        373
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 5,
+      "box_px": [
+        525,
+        280,
+        630,
+        373
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 6,
+      "box_px": [
+        630,
+        280,
+        735,
+        373
+      ],
+      "filtered_count": 1,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 7,
+      "box_px": [
+        735,
+        280,
+        840,
+        373
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 0,
+      "box_px": [
+        0,
+        373,
+        105,
+        466
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "box_px": [
+        105,
+        373,
+        210,
+        466
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "box_px": [
+        210,
+        373,
+        315,
+        466
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "box_px": [
+        315,
+        373,
+        420,
+        466
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "box_px": [
+        420,
+        373,
+        525,
+        466
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 5,
+      "box_px": [
+        525,
+        373,
+        630,
+        466
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 6,
+      "box_px": [
+        630,
+        373,
+        735,
+        466
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 7,
+      "box_px": [
+        735,
+        373,
+        840,
+        466
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 0,
+      "box_px": [
+        0,
+        466,
+        105,
+        559
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 1,
+      "box_px": [
+        105,
+        466,
+        210,
+        559
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 2,
+      "box_px": [
+        210,
+        466,
+        315,
+        559
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 3,
+      "box_px": [
+        315,
+        466,
+        420,
+        559
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 4,
+      "box_px": [
+        420,
+        466,
+        525,
+        559
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 5,
+      "box_px": [
+        525,
+        466,
+        630,
+        559
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 6,
+      "box_px": [
+        630,
+        466,
+        735,
+        559
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 7,
+      "box_px": [
+        735,
+        466,
+        840,
+        559
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    }
+  ],
+  "final_decision": "BOUNDED_REGISTRATION_SUFFICIENT_FOR_CHANGE_EVIDENCE",
+  "next_allowed_phase": "candidate visible-change evidence only inside TRUSTED bounded regions",
+  "runtime_seconds": 40.462132759999804
+}

@@ -1,0 +1,21 @@
+{
+  "archival": {
+    "filename": "sanchi_sh01_1863.jpg",
+    "year_date": "1863",
+    "photographer": "James John Waterhouse",
+    "archive_source": "Rijksmuseum",
+    "source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+    "license": "Public Domain",
+    "viewpoint": "Front view of eastern gateway",
+    "preprocessing": "Rotated +90 degrees for correct viewing orientation; source pixels otherwise unchanged."
+  },
+  "modern": {
+    "filename": "sanchi_sm01_2015.jpg",
+    "year_date": "2015",
+    "photographer": "unknown",
+    "archive_source": "tripinvites",
+    "source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+    "license": "Public Domain",
+    "viewpoint": "Front view of eastern gateway"
+  }
+}

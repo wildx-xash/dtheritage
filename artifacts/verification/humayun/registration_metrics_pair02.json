@@ -1,0 +1,371 @@
+{
+  "experiment": "loftr_baseline_registration",
+  "monument": "humayuns_tomb",
+  "timestamp_utc": "2026-08-21T19:50:39.061691+00:00",
+  "status": "success",
+  "failure_reason": null,
+  "implementation": {
+    "library": "kornia",
+    "library_version": "0.8.3",
+    "torch_version": "2.13.0+cpu",
+    "model": "LoFTR (detector-free local feature matching with transformers)",
+    "pretrained_weights": "outdoor",
+    "weights_rationale": "Trained on MegaDepth (outdoor landmark photo collections with wide viewpoint and illumination variation). The 'indoor' alternative is ScanNet and is inappropriate for outdoor architecture.",
+    "weights_source_url": "http://cmp.felk.cvut.cz/~mishkdmy/models/loftr_outdoor.ckpt",
+    "device": "cpu",
+    "cuda_available": false,
+    "weights_cache_path": "/tmp/dtheritage_torch/hub/checkpoints/loftr_outdoor.ckpt"
+  },
+  "parameters": {
+    "max_inference_dimension_px": 840,
+    "pad_multiple": 8,
+    "confidence_threshold": 0.5,
+    "ransac_method_primary": "ransac",
+    "ransac_reproj_threshold_px": 3.0,
+    "ransac_max_iters": 10000,
+    "rng_seed": 0,
+    "preprocessing": "Greyscale conversion and aspect-preserving resize with zero padding to a multiple of 8. No CLAHE, no ROI crop, no contrast manipulation -- LoFTR was trained on ordinary photographs and the point of this experiment is to isolate the learned-matching variable."
+  },
+  "validity_gates": {
+    "min_filtered_matches": 15,
+    "min_inliers": 12,
+    "min_inlier_ratio": 0.25,
+    "min_inlier_hull_area_fraction": 0.05,
+    "warped_quad_area_ratio_bounds": [
+      0.05,
+      20.0
+    ],
+    "max_condition_number": 100000000.0,
+    "require_corner_w_same_sign": true,
+    "min_overlap_fraction": 0.1,
+    "note": "Identical to the sift_improved thresholds, plus an overlap floor, so LoFTR is held to exactly the same standard."
+  },
+  "checks": [
+    {
+      "name": "sufficient_filtered_matches",
+      "passed": true,
+      "value": 519,
+      "threshold": 15,
+      "rationale": "A homography needs 4 points; near that count RANSAC has no consensus to measure and always 'succeeds'."
+    },
+    {
+      "name": "homography_well_conditioned",
+      "passed": true,
+      "value": {
+        "estimated": true,
+        "condition_number": 20031.209741797622
+      },
+      "threshold": "finite and cond(H) < 1e+08",
+      "rationale": "Scale-invariant degeneracy test; cond(cH) == cond(H). The baseline's absolute |det(H)| test was scale-dependent and passed a homography with cond = 1.79e9."
+    },
+    {
+      "name": "sufficient_inliers",
+      "passed": true,
+      "value": 301,
+      "threshold": 12,
+      "rationale": "Absolute floor on the size of the consensus set."
+    },
+    {
+      "name": "sufficient_inlier_ratio",
+      "passed": true,
+      "value": 0.5799614643545279,
+      "threshold": 0.25,
+      "rationale": "If under a quarter of filtered matches agree, the consensus set is likely a coincidental cluster."
+    },
+    {
+      "name": "inlier_spatial_spread",
+      "passed": true,
+      "value": 0.07907305355376572,
+      "threshold": 0.05,
+      "rationale": "Inliers confined to a small region give a homography that is locally consistent and globally unconstrained."
+    },
+    {
+      "name": "warped_frame_sane",
+      "passed": true,
+      "value": {
+        "convex": true,
+        "area_ratio": 1.0453328971695555
+      },
+      "threshold": {
+        "convex": true,
+        "area_ratio_bounds": [
+          0.05,
+          20.0
+        ]
+      },
+      "rationale": "A folded or collapsed quadrilateral is the signature of a degenerate homography that still produces an image."
+    },
+    {
+      "name": "no_vanishing_line_crossing",
+      "passed": true,
+      "value": [
+        1.0,
+        0.9872817600177813,
+        1.2711327154189733,
+        1.2838509554011919
+      ],
+      "threshold": "all four corner w-values share a sign",
+      "rationale": "A sign flip means the vanishing line passes through the image and part of the source is mapped through infinity. This caused the radial smear in both classical experiments."
+    },
+    {
+      "name": "sufficient_overlap",
+      "passed": true,
+      "value": 0.7330884232047022,
+      "threshold": 0.1,
+      "rationale": "Floor only. A degenerate homography covered 98% of the frame in the baseline, so a high overlap fraction proves nothing."
+    }
+  ],
+  "environment": {
+    "python": "3.12.3",
+    "opencv": "5.0.0",
+    "numpy": "2.5.2",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+    "cpu_count": 4
+  },
+  "notes": [
+    "This experiment tests the CORRESPONDENCE question. Correspondence success and homography success are separate questions and are reported separately.",
+    "Reprojection error over inliers is bounded above by the RANSAC threshold by construction and is never used as a validity gate.",
+    "RANSAC threshold is in LoFTR INFERENCE pixels, whose resolution differs from the SIFT experiments' working images; account for that when comparing absolute pixel errors.",
+    "Geometric registration is a prerequisite for change analysis. It is not evidence of structural change, damage or deterioration."
+  ],
+  "timings_seconds": {
+    "load": 0.53714736099937,
+    "preprocess": 0.13463410700023815,
+    "model_load": 0.8243596929996784,
+    "inference": 49.952814718999434,
+    "filter": 4.6382000618905295e-05,
+    "ransac": 0.0034743859996524407,
+    "warp": 0.011559734999536886,
+    "total": 51.841359193000244
+  },
+  "inputs": {
+    "archival": {
+      "resolved_path": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+      "width": 4000,
+      "height": 3209
+    },
+    "modern": {
+      "resolved_path": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+      "width": 1920,
+      "height": 1278
+    }
+  },
+  "inference_images": {
+    "archival": {
+      "original_width": 4000,
+      "original_height": 3209,
+      "scale": 0.21,
+      "resized_width": 840,
+      "resized_height": 674,
+      "pad_right": 0,
+      "pad_bottom": 6,
+      "padded_width": 840,
+      "padded_height": 680,
+      "interpolation": "INTER_AREA",
+      "aspect_ratio_preserved_exactly": true
+    },
+    "modern": {
+      "original_width": 1920,
+      "original_height": 1278,
+      "scale": 0.4375,
+      "resized_width": 840,
+      "resized_height": 559,
+      "pad_right": 0,
+      "pad_bottom": 1,
+      "padded_width": 840,
+      "padded_height": 560,
+      "interpolation": "INTER_AREA",
+      "aspect_ratio_preserved_exactly": true
+    }
+  },
+  "correspondences": {
+    "total_predicted": 804,
+    "discarded_in_padding": 0,
+    "confidence_threshold": 0.5,
+    "filtered_count": 519,
+    "confidence_distribution": {
+      "min": 0.2001131772994995,
+      "max": 0.9990733861923218,
+      "mean": 0.6492157578468323,
+      "std": 0.26601532101631165,
+      "percentiles": {
+        "p1": 0.20486073195934296,
+        "p5": 0.2357935607433319,
+        "p10": 0.27302825450897217,
+        "p25": 0.3850727081298828,
+        "p50": 0.6862988471984863,
+        "p75": 0.9061293601989746,
+        "p90": 0.977898120880127,
+        "p95": 0.9890167713165283,
+        "p99": 0.9963284730911255
+      },
+      "histogram": {
+        "bin_edges": [
+          0.0,
+          0.05000000074505806,
+          0.10000000149011612,
+          0.15000000596046448,
+          0.20000000298023224,
+          0.25,
+          0.30000001192092896,
+          0.3499999940395355,
+          0.4000000059604645,
+          0.44999998807907104,
+          0.5,
+          0.550000011920929,
+          0.6000000238418579,
+          0.6499999761581421,
+          0.699999988079071,
+          0.75,
+          0.800000011920929,
+          0.8500000238418579,
+          0.8999999761581421,
+          0.949999988079071,
+          1.0
+        ],
+        "counts": [
+          0,
+          0,
+          0,
+          0,
+          57,
+          51,
+          50,
+          55,
+          39,
+          33,
+          37,
+          26,
+          31,
+          34,
+          35,
+          29,
+          55,
+          64,
+          65,
+          143
+        ]
+      }
+    },
+    "counts_at_thresholds": {
+      "0.2": 804,
+      "0.3": 696,
+      "0.4": 591,
+      "0.5": 519,
+      "0.6": 456,
+      "0.7": 391,
+      "0.8": 327,
+      "0.9": 208
+    },
+    "threshold_note": "The decision threshold was fixed at 0.5 before the run. Counts at other thresholds are reported for transparency only and were not used to select a result.",
+    "drawn_in_03_all_matches": 400,
+    "drawn_in_04_filtered_matches": 400
+  },
+  "cross_check_estimator": {
+    "method": "magsac",
+    "inlier_count": 331,
+    "homography_estimated": true
+  },
+  "ransac": {
+    "method": "ransac",
+    "reproj_threshold_px": 3.0,
+    "inlier_count": 301,
+    "inlier_ratio": 0.5799614643545279,
+    "inlier_hull_area_fraction_of_archival_inference": 0.07907305355376572
+  },
+  "homography": {
+    "matrix_inference_coords": [
+      [
+        1.0674019295157526,
+        0.21898993390330293,
+        -15.378602140461348
+      ],
+      [
+        -0.027771733096670307,
+        1.082754940282411,
+        -150.94864188875894
+      ],
+      [
+        -1.514076188359366e-05,
+        0.00042114385074360817,
+        1.0
+      ]
+    ],
+    "matrix_original_coords": [
+      [
+        0.5123529261675612,
+        0.1051151682735854,
+        -35.1510906067688
+      ],
+      [
+        -0.013330431886401746,
+        0.5197223713355572,
+        -345.02546717430613
+      ],
+      [
+        -3.1795599955546684e-06,
+        8.844020865615771e-05,
+        1.0
+      ]
+    ],
+    "determinant": 1.2301005993783183,
+    "condition_number": 20031.209741797622,
+    "corner_w_values": [
+      1.0,
+      0.9872817600177813,
+      1.2711327154189733,
+      1.2838509554011919
+    ],
+    "corner_w_all_same_sign": true,
+    "warped_corners_in_modern_inference_coords": [
+      [
+        -15.378602027893066,
+        -150.94863891601562
+      ],
+      [
+        892.5911865234375,
+        -176.52194213867188
+      ],
+      [
+        809.386962890625,
+        437.0117492675781
+      ],
+      [
+        102.98751068115234,
+        450.8531188964844
+      ]
+    ],
+    "warped_quad_area_px": 490846.5151949364,
+    "warped_quad_area_ratio_vs_modern": 1.0453328971695555,
+    "warped_quad_is_convex": true,
+    "approx_scale_from_affine_part": [
+      1.178051925311602,
+      0.9862183639639412
+    ],
+    "approx_rotation_deg_from_affine_part": -1.4903890919142038
+  },
+  "geometric_error": {
+    "definition": "Forward reprojection error ||project(H, x_archival) - x_modern||_2, in modern INFERENCE pixels.",
+    "caveat": "Bounded above by the RANSAC threshold over inliers by construction. Recorded, never gated.",
+    "over_ransac_inliers": {
+      "count": 301,
+      "mean_px": 1.5093762874603271,
+      "median_px": 1.4808509349822998,
+      "rmse_px": 1.6920244693756104,
+      "max_px": 2.9913477897644043
+    },
+    "over_all_filtered": {
+      "count": 519,
+      "mean_px": 6.3966498374938965,
+      "median_px": 2.4539783000946045,
+      "rmse_px": 13.827757835388184,
+      "max_px": 110.7984848022461
+    }
+  },
+  "photometric_check": {
+    "definition": "Pearson correlation of greyscale intensity over the valid warp overlap. The only reported signal not derived from the correspondences RANSAC used.",
+    "overlap_pixels": 344229,
+    "overlap_fraction_of_modern": 0.7330884232047022,
+    "pearson_ncc": 0.5348226027734408
+  }
+}
