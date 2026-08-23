@@ -1,0 +1,1033 @@
+{
+  "experiment": "bounded_local_geometry_trust_region_registration",
+  "timestamp_utc": "2026-08-22T16:04:40.966568+00:00",
+  "input_pair": {
+    "pair_id": "gateway_front_1863_2015",
+    "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+    "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+    "source_from_multi_pair_metadata": {
+      "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+      "modern_source": "sanchi_sm01_2015.jpg"
+    }
+  },
+  "implementation": {
+    "library": "kornia",
+    "library_version": "0.8.3",
+    "torch_version": "2.13.0+cpu",
+    "device": "cpu",
+    "python": "3.12.3",
+    "opencv": "5.0.0",
+    "numpy": "2.5.2",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "parameters": {
+    "max_inference_dimension_px": 840,
+    "confidence_threshold": 0.5,
+    "ransac_method": "ransac",
+    "ransac_reproj_threshold_px": 3.0,
+    "ransac_max_iters": 10000,
+    "grid_cols": 8,
+    "grid_rows": 6,
+    "region_thresholds": {
+      "min_region_filtered": 12,
+      "min_region_inliers": 8,
+      "min_trusted_inliers": 30,
+      "max_trusted_rmse": 2.2,
+      "max_trusted_median": 1.8,
+      "max_marginal_rmse": 3.0,
+      "max_marginal_median": 2.5
+    }
+  },
+  "reproduced_global_result": {
+    "prior_metrics_path": "outputs/registration/sanchi/loftr_pairs/gateway_front_1863_2015/metrics.json",
+    "prior_filtered_count": 566,
+    "prior_inlier_count": 358,
+    "prior_inlier_ratio": 0.6325088339222615,
+    "filtered_count": 566,
+    "inlier_count": 358,
+    "inlier_ratio": 0.6325088339222615,
+    "geometric_error_over_inliers": {
+      "count": 358,
+      "mean_px": 1.3575341701507568,
+      "median_px": 1.2551188468933105,
+      "rmse_px": 1.524817705154419,
+      "max_px": 2.9205987453460693
+    },
+    "geometric_error_over_all_filtered": {
+      "count": 566,
+      "mean_px": 5.036437511444092,
+      "median_px": 1.9890413284301758,
+      "rmse_px": 12.546576499938965,
+      "max_px": 136.72262573242188
+    },
+    "overlap_fraction": 0.696152,
+    "ncc": 0.559297383153108
+  },
+  "method_notes": [
+    "Trust is assigned from validated RANSAC inlier support, local residuals, and overlap diagnostics.",
+    "RANSAC-rejected LoFTR matches are not treated as physical parallax evidence.",
+    "Local homographies are attempted only inside named regions with enough filtered correspondences and must pass support and transform sanity gates.",
+    "This output identifies bounded comparison regions only; it does not perform change detection."
+  ],
+  "regions": [
+    {
+      "region_id": "eastern_torana",
+      "label": "eastern gateway / torana",
+      "box_px": [
+        105,
+        40,
+        578,
+        440
+      ],
+      "box_rel": [
+        0.14,
+        0.08,
+        0.77,
+        0.88
+      ],
+      "filtered_count": 524,
+      "global_inlier_count": 346,
+      "global_inlier_ratio_in_region": 0.6603053435114504,
+      "mean_inlier_confidence": 0.8144132494926453,
+      "inlier_hull_fraction_of_region": 0.3877984851299075,
+      "global_reprojection": {
+        "count": 346,
+        "mean_px": 1.3419767618179321,
+        "median_px": 1.2473270893096924,
+        "rmse_px": 1.508257508277893,
+        "max_px": 2.9205987453460693
+      },
+      "global_ncc": 0.50231475142846,
+      "local_transform": {
+        "attempted": true,
+        "estimated": true,
+        "valid": true,
+        "inlier_count": 352,
+        "inlier_ratio": 0.6717557251908397,
+        "errors_over_local_inliers": {
+          "count": 352,
+          "mean_px": 1.346462368965149,
+          "median_px": 1.31105637550354,
+          "rmse_px": 1.5204728841781616,
+          "max_px": 2.976515293121338
+        },
+        "condition_number": 16670.937461289323,
+        "warped_quad_is_convex": true,
+        "warped_quad_area_ratio_vs_modern": 3.300400819778344,
+        "corner_w_all_same_sign": true,
+        "global_rmse_on_global_inliers": 1.508257508277893,
+        "reason": "valid bounded transform"
+      },
+      "trust_tier": "TRUSTED",
+      "explanation": "global RMSE 1.51px; median 1.25px; bounded local homography passed sanity gates",
+      "human_guided_fallback_landmarks": [
+        "torana pillar bases",
+        "crossbar ends",
+        "central relief panels"
+      ]
+    },
+    {
+      "region_id": "torana_crossbars",
+      "label": "torana crossbars and relief panels",
+      "box_px": [
+        120,
+        50,
+        562,
+        290
+      ],
+      "box_rel": [
+        0.16,
+        0.1,
+        0.75,
+        0.58
+      ],
+      "filtered_count": 361,
+      "global_inlier_count": 304,
+      "global_inlier_ratio_in_region": 0.8421052631578947,
+      "mean_inlier_confidence": 0.8170126080513,
+      "inlier_hull_fraction_of_region": 0.4462441691665344,
+      "global_reprojection": {
+        "count": 304,
+        "mean_px": 1.2756048440933228,
+        "median_px": 1.192610740661621,
+        "rmse_px": 1.4347730875015259,
+        "max_px": 2.8651604652404785
+      },
+      "global_ncc": 0.5907668831295483,
+      "local_transform": {
+        "attempted": true,
+        "estimated": true,
+        "valid": true,
+        "inlier_count": 297,
+        "inlier_ratio": 0.8227146814404432,
+        "errors_over_local_inliers": {
+          "count": 297,
+          "mean_px": 1.197351336479187,
+          "median_px": 1.095916986465454,
+          "rmse_px": 1.3859070539474487,
+          "max_px": 2.8667378425598145
+        },
+        "condition_number": 16645.262878322028,
+        "warped_quad_is_convex": true,
+        "warped_quad_area_ratio_vs_modern": 3.199775879384394,
+        "corner_w_all_same_sign": true,
+        "global_rmse_on_global_inliers": 1.4347730875015259,
+        "reason": "valid bounded transform"
+      },
+      "trust_tier": "TRUSTED",
+      "explanation": "global RMSE 1.43px; median 1.19px; bounded local homography passed sanity gates",
+      "human_guided_fallback_landmarks": [
+        "crossbar corners",
+        "relief-panel boundaries"
+      ]
+    },
+    {
+      "region_id": "stupa_background",
+      "label": "stupa and background beyond gateway",
+      "box_px": [
+        390,
+        100,
+        750,
+        440
+      ],
+      "box_rel": [
+        0.52,
+        0.2,
+        1.0,
+        0.88
+      ],
+      "filtered_count": 84,
+      "global_inlier_count": 31,
+      "global_inlier_ratio_in_region": 0.36904761904761907,
+      "mean_inlier_confidence": 0.790747344493866,
+      "inlier_hull_fraction_of_region": 0.047066306634084204,
+      "global_reprojection": {
+        "count": 31,
+        "mean_px": 1.7512460947036743,
+        "median_px": 1.6701819896697998,
+        "rmse_px": 1.85440194606781,
+        "max_px": 2.8651604652404785
+      },
+      "global_ncc": 0.24568237566885748,
+      "local_transform": {
+        "attempted": true,
+        "estimated": true,
+        "valid": true,
+        "inlier_count": 46,
+        "inlier_ratio": 0.5476190476190477,
+        "errors_over_local_inliers": {
+          "count": 46,
+          "mean_px": 1.3714748620986938,
+          "median_px": 1.1921465396881104,
+          "rmse_px": 1.5692721605300903,
+          "max_px": 2.9464399814605713
+        },
+        "condition_number": 40796.54170410309,
+        "warped_quad_is_convex": true,
+        "warped_quad_area_ratio_vs_modern": 7.666937017726655,
+        "corner_w_all_same_sign": true,
+        "global_rmse_on_global_inliers": 1.85440194606781,
+        "reason": "valid bounded transform"
+      },
+      "trust_tier": "TRUSTED",
+      "explanation": "global RMSE 1.85px; median 1.67px; bounded local homography passed sanity gates",
+      "human_guided_fallback_landmarks": [
+        "railing line",
+        "stupa contour"
+      ]
+    },
+    {
+      "region_id": "sky_and_archival_border",
+      "label": "sky and archival page border",
+      "box_px": [
+        0,
+        0,
+        750,
+        80
+      ],
+      "box_rel": [
+        0.0,
+        0.0,
+        1.0,
+        0.16
+      ],
+      "filtered_count": 2,
+      "global_inlier_count": 0,
+      "global_inlier_ratio_in_region": 0.0,
+      "mean_inlier_confidence": null,
+      "inlier_hull_fraction_of_region": 0.0,
+      "global_reprojection": null,
+      "global_ncc": -0.02600850891340966,
+      "local_transform": {
+        "attempted": false,
+        "reason": "insufficient filtered support"
+      },
+      "trust_tier": "UNSUPPORTED",
+      "explanation": "too few filtered correspondences; too few validated global inliers",
+      "human_guided_fallback_landmarks": [
+        "not applicable"
+      ]
+    }
+  ],
+  "grid_cells": [
+    {
+      "row": 0,
+      "col": 0,
+      "box_px": [
+        0,
+        0,
+        94,
+        83
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "box_px": [
+        94,
+        0,
+        188,
+        83
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "box_px": [
+        188,
+        0,
+        281,
+        83
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "box_px": [
+        281,
+        0,
+        375,
+        83
+      ],
+      "filtered_count": 2,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 4,
+      "box_px": [
+        375,
+        0,
+        469,
+        83
+      ],
+      "filtered_count": 2,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 5,
+      "box_px": [
+        469,
+        0,
+        562,
+        83
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 6,
+      "box_px": [
+        562,
+        0,
+        656,
+        83
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 0,
+      "col": 7,
+      "box_px": [
+        656,
+        0,
+        750,
+        83
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 1,
+      "col": 0,
+      "box_px": [
+        0,
+        83,
+        94,
+        167
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 1,
+      "col": 1,
+      "box_px": [
+        94,
+        83,
+        188,
+        167
+      ],
+      "filtered_count": 13,
+      "inlier_count": 13,
+      "trust_tier": "MARGINAL",
+      "global_reprojection": {
+        "count": 13,
+        "mean_px": 1.2233922481536865,
+        "median_px": 0.8018258810043335,
+        "rmse_px": 1.4292393922805786,
+        "max_px": 2.8196492195129395
+      }
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "box_px": [
+        188,
+        83,
+        281,
+        167
+      ],
+      "filtered_count": 33,
+      "inlier_count": 33,
+      "trust_tier": "TRUSTED",
+      "global_reprojection": {
+        "count": 33,
+        "mean_px": 0.9583759903907776,
+        "median_px": 0.7731816172599792,
+        "rmse_px": 1.1406623125076294,
+        "max_px": 2.190438985824585
+      }
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "box_px": [
+        281,
+        83,
+        375,
+        167
+      ],
+      "filtered_count": 40,
+      "inlier_count": 32,
+      "trust_tier": "TRUSTED",
+      "global_reprojection": {
+        "count": 32,
+        "mean_px": 1.1556153297424316,
+        "median_px": 1.07014000415802,
+        "rmse_px": 1.22650146484375,
+        "max_px": 2.161590814590454
+      }
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "box_px": [
+        375,
+        83,
+        469,
+        167
+      ],
+      "filtered_count": 34,
+      "inlier_count": 11,
+      "trust_tier": "UNTRUSTED",
+      "global_reprojection": {
+        "count": 11,
+        "mean_px": 1.8035387992858887,
+        "median_px": 1.7234169244766235,
+        "rmse_px": 2.006284236907959,
+        "max_px": 2.8651604652404785
+      }
+    },
+    {
+      "row": 1,
+      "col": 5,
+      "box_px": [
+        469,
+        83,
+        562,
+        167
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 1,
+      "col": 6,
+      "box_px": [
+        562,
+        83,
+        656,
+        167
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 1,
+      "col": 7,
+      "box_px": [
+        656,
+        83,
+        750,
+        167
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 0,
+      "box_px": [
+        0,
+        167,
+        94,
+        250
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "box_px": [
+        94,
+        167,
+        188,
+        250
+      ],
+      "filtered_count": 46,
+      "inlier_count": 37,
+      "trust_tier": "TRUSTED",
+      "global_reprojection": {
+        "count": 37,
+        "mean_px": 1.3081598281860352,
+        "median_px": 1.2010008096694946,
+        "rmse_px": 1.464393973350525,
+        "max_px": 2.682677984237671
+      }
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "box_px": [
+        188,
+        167,
+        281,
+        250
+      ],
+      "filtered_count": 31,
+      "inlier_count": 31,
+      "trust_tier": "TRUSTED",
+      "global_reprojection": {
+        "count": 31,
+        "mean_px": 1.5779786109924316,
+        "median_px": 1.3626863956451416,
+        "rmse_px": 1.6963222026824951,
+        "max_px": 2.790722608566284
+      }
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "box_px": [
+        281,
+        167,
+        375,
+        250
+      ],
+      "filtered_count": 47,
+      "inlier_count": 44,
+      "trust_tier": "TRUSTED",
+      "global_reprojection": {
+        "count": 44,
+        "mean_px": 1.0648596286773682,
+        "median_px": 1.1062787771224976,
+        "rmse_px": 1.181259274482727,
+        "max_px": 2.2253682613372803
+      }
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "box_px": [
+        375,
+        167,
+        469,
+        250
+      ],
+      "filtered_count": 32,
+      "inlier_count": 29,
+      "trust_tier": "MARGINAL",
+      "global_reprojection": {
+        "count": 29,
+        "mean_px": 1.2501384019851685,
+        "median_px": 1.0571528673171997,
+        "rmse_px": 1.430511236190796,
+        "max_px": 2.8214404582977295
+      }
+    },
+    {
+      "row": 2,
+      "col": 5,
+      "box_px": [
+        469,
+        167,
+        562,
+        250
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 6,
+      "box_px": [
+        562,
+        167,
+        656,
+        250
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 2,
+      "col": 7,
+      "box_px": [
+        656,
+        167,
+        750,
+        250
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 0,
+      "box_px": [
+        0,
+        250,
+        94,
+        333
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "box_px": [
+        94,
+        250,
+        188,
+        333
+      ],
+      "filtered_count": 42,
+      "inlier_count": 26,
+      "trust_tier": "MARGINAL",
+      "global_reprojection": {
+        "count": 26,
+        "mean_px": 1.472581386566162,
+        "median_px": 1.477555274963379,
+        "rmse_px": 1.6519399881362915,
+        "max_px": 2.8870432376861572
+      }
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "box_px": [
+        188,
+        250,
+        281,
+        333
+      ],
+      "filtered_count": 32,
+      "inlier_count": 23,
+      "trust_tier": "MARGINAL",
+      "global_reprojection": {
+        "count": 23,
+        "mean_px": 1.837784767150879,
+        "median_px": 1.9573071002960205,
+        "rmse_px": 1.9417541027069092,
+        "max_px": 2.810023307800293
+      }
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "box_px": [
+        281,
+        250,
+        375,
+        333
+      ],
+      "filtered_count": 37,
+      "inlier_count": 27,
+      "trust_tier": "MARGINAL",
+      "global_reprojection": {
+        "count": 27,
+        "mean_px": 1.1884362697601318,
+        "median_px": 1.0154750347137451,
+        "rmse_px": 1.367742657661438,
+        "max_px": 2.3976025581359863
+      }
+    },
+    {
+      "row": 3,
+      "col": 4,
+      "box_px": [
+        375,
+        250,
+        469,
+        333
+      ],
+      "filtered_count": 32,
+      "inlier_count": 18,
+      "trust_tier": "MARGINAL",
+      "global_reprojection": {
+        "count": 18,
+        "mean_px": 1.5005102157592773,
+        "median_px": 1.3811109066009521,
+        "rmse_px": 1.59856379032135,
+        "max_px": 2.48753023147583
+      }
+    },
+    {
+      "row": 3,
+      "col": 5,
+      "box_px": [
+        469,
+        250,
+        562,
+        333
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 6,
+      "box_px": [
+        562,
+        250,
+        656,
+        333
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 3,
+      "col": 7,
+      "box_px": [
+        656,
+        250,
+        750,
+        333
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 0,
+      "box_px": [
+        0,
+        333,
+        94,
+        417
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "box_px": [
+        94,
+        333,
+        188,
+        417
+      ],
+      "filtered_count": 30,
+      "inlier_count": 19,
+      "trust_tier": "MARGINAL",
+      "global_reprojection": {
+        "count": 19,
+        "mean_px": 1.8446189165115356,
+        "median_px": 1.863650918006897,
+        "rmse_px": 1.961102843284607,
+        "max_px": 2.9205987453460693
+      }
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "box_px": [
+        188,
+        333,
+        281,
+        417
+      ],
+      "filtered_count": 6,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "box_px": [
+        281,
+        333,
+        375,
+        417
+      ],
+      "filtered_count": 26,
+      "inlier_count": 0,
+      "trust_tier": "UNTRUSTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "box_px": [
+        375,
+        333,
+        469,
+        417
+      ],
+      "filtered_count": 28,
+      "inlier_count": 0,
+      "trust_tier": "UNTRUSTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 5,
+      "box_px": [
+        469,
+        333,
+        562,
+        417
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 6,
+      "box_px": [
+        562,
+        333,
+        656,
+        417
+      ],
+      "filtered_count": 1,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 4,
+      "col": 7,
+      "box_px": [
+        656,
+        333,
+        750,
+        417
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 0,
+      "box_px": [
+        0,
+        417,
+        94,
+        500
+      ],
+      "filtered_count": 2,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 1,
+      "box_px": [
+        94,
+        417,
+        188,
+        500
+      ],
+      "filtered_count": 23,
+      "inlier_count": 15,
+      "trust_tier": "MARGINAL",
+      "global_reprojection": {
+        "count": 15,
+        "mean_px": 1.7680078744888306,
+        "median_px": 1.8727577924728394,
+        "rmse_px": 1.8961243629455566,
+        "max_px": 2.764000177383423
+      }
+    },
+    {
+      "row": 5,
+      "col": 2,
+      "box_px": [
+        188,
+        417,
+        281,
+        500
+      ],
+      "filtered_count": 6,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 3,
+      "box_px": [
+        281,
+        417,
+        375,
+        500
+      ],
+      "filtered_count": 16,
+      "inlier_count": 0,
+      "trust_tier": "UNTRUSTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 4,
+      "box_px": [
+        375,
+        417,
+        469,
+        500
+      ],
+      "filtered_count": 5,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 5,
+      "box_px": [
+        469,
+        417,
+        562,
+        500
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 6,
+      "box_px": [
+        562,
+        417,
+        656,
+        500
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    },
+    {
+      "row": 5,
+      "col": 7,
+      "box_px": [
+        656,
+        417,
+        750,
+        500
+      ],
+      "filtered_count": 0,
+      "inlier_count": 0,
+      "trust_tier": "UNSUPPORTED",
+      "global_reprojection": null
+    }
+  ],
+  "final_decision": "BOUNDED_REGISTRATION_SUFFICIENT_FOR_CHANGE_EVIDENCE",
+  "next_allowed_phase": "candidate visible-change evidence only inside TRUSTED bounded regions",
+  "runtime_seconds": 40.488487550999935
+}

@@ -1,0 +1,614 @@
+{
+  "experiment": "candidate_visible_change_evidence_humayun",
+  "timestamp_utc": "2026-08-21T20:35:47.563282+00:00",
+  "decision": "CHANGE_EVIDENCE_PIPELINE_VIABLE",
+  "inputs": {
+    "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+    "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+    "registered_archival": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/04_registered_global.jpg",
+    "trust_region_metrics": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/trust_region_metrics.json"
+  },
+  "valid_comparison_area": {
+    "included_tiers": [
+      "LOCALLY_RECOVERABLE",
+      "TRUSTED"
+    ],
+    "included_regions": [
+      {
+        "region_id": "central_facade_iwan",
+        "trust_tier": "TRUSTED",
+        "box_px": [
+          269,
+          140,
+          571,
+          324
+        ],
+        "local_transform_valid": true
+      },
+      {
+        "region_id": "arcade",
+        "trust_tier": "LOCALLY_RECOVERABLE",
+        "box_px": [
+          50,
+          196,
+          790,
+          324
+        ],
+        "local_transform_valid": true
+      },
+      {
+        "region_id": "upper_structure_parapet",
+        "trust_tier": "TRUSTED",
+        "box_px": [
+          202,
+          101,
+          638,
+          201
+        ],
+        "local_transform_valid": true
+      }
+    ],
+    "excluded_regions": [
+      {
+        "region_id": "dome",
+        "trust_tier": "MARGINAL",
+        "box_px": [
+          353,
+          11,
+          487,
+          112
+        ]
+      },
+      {
+        "region_id": "ground_garden_reflection",
+        "trust_tier": "UNSUPPORTED",
+        "box_px": [
+          0,
+          391,
+          840,
+          559
+        ]
+      }
+    ],
+    "valid_area_px": 124477,
+    "flagged_area_px": 1981,
+    "flagged_fraction_of_valid_area": 0.01591458663046185
+  },
+  "method": {
+    "photometric_normalisation": "Grayscale histogram matching of registered archival to modern within valid comparison mask, followed by CLAHE clipLimit=2.0 tileGridSize=8x8.",
+    "signals": [
+      "absolute normalized intensity difference",
+      "Sobel gradient magnitude difference",
+      "Canny edge-change support"
+    ],
+    "thresholds": {
+      "intensity_diff_percentile_inside_valid_mask": 88,
+      "resolved_intensity_threshold": 128,
+      "gradient_diff_percentile_inside_valid_mask": 75,
+      "resolved_gradient_threshold": 59,
+      "min_candidate_area_px": 90,
+      "mask_erode_px": 5
+    },
+    "false_positive_controls": [
+      "valid registration mask",
+      "invalid warp exclusion",
+      "exclusion of MARGINAL/UNTRUSTED/UNSUPPORTED trust regions",
+      "conservative HSV vegetation suppression",
+      "agreement between intensity and gradient/edge signals",
+      "morphological opening/closing",
+      "minimum connected-component area"
+    ],
+    "evidence_strength_rule": "HIGH requires TRUSTED registration, area >= 250 px, mean signal >= 70 and agreement >= 0.45; MEDIUM requires area >= 120 px, mean signal >= 50 and agreement >= 0.30; otherwise LOW."
+  },
+  "candidate_count": 8,
+  "candidate_counts_by_strength": {
+    "HIGH_EVIDENCE": 0,
+    "MEDIUM_EVIDENCE": 4,
+    "LOW_EVIDENCE": 4
+  },
+  "candidate_counts_by_region": {
+    "central_facade_iwan": 3,
+    "arcade": 5,
+    "upper_structure_parapet": 0
+  },
+  "manual_inspection_notes": [
+    "Candidates overlapping hedges/trees are suppressed where detected, but vegetation and tourist occlusion can still leak into facade-region candidates.",
+    "Manual overlay inspection found the strongest false-positive risk along the lower arcade / hedge / people foreground band; those candidates are explicitly marked with foreground_hedge_or_people_occlusion_zone.",
+    "Dome and ground/reflection are intentionally excluded from candidate evidence despite visible differences.",
+    "Candidate categories are coarse proposals for human review, not damage labels."
+  ],
+  "candidates": [
+    {
+      "candidate_id": "HUMAYUN_CE_005",
+      "monument": "Humayun's Tomb",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "arcade",
+      "registration_region_label": "arcade / lower facade",
+      "registration_trust": "LOCALLY_RECOVERABLE",
+      "bbox_xywh_in_inference_image": [
+        587,
+        259,
+        57,
+        16
+      ],
+      "area_px": 671,
+      "change_type": "foreground_or_occlusion_uncertainty",
+      "evidence_strength": "MEDIUM_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 178.73025335320418,
+        "mean_gradient_difference": 48.700447093889714,
+        "signal_agreement_fraction": 0.992548435171386,
+        "gradient_agreement_fraction": 0.30402384500745155,
+        "edge_change_fraction": 0.9821162444113264,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 93,
+        "region_global_inliers": 13,
+        "region_global_rmse_px": 1.922361969947815,
+        "local_transform_valid": true,
+        "local_transform_inliers": 81,
+        "local_transform_rmse_px": 1.313382863998413
+      },
+      "uncertainty_indicators": [
+        "local_registration_recoverable_not_primary_global_trust",
+        "foreground_hedge_or_people_occlusion_zone"
+      ],
+      "provenance": {
+        "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+        "archival_source": "archival.jpg",
+        "archival_date": null,
+        "archival_author": null,
+        "archival_source_url": null,
+        "archival_license": null,
+        "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+        "modern_source": "in_Delhi-Front_view.jpg",
+        "modern_date": null,
+        "modern_source_url": null,
+        "modern_license": null,
+        "trust_region_metrics": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/trust_region_metrics.json",
+        "registered_archival_image": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_humayun_v1"
+      }
+    },
+    {
+      "candidate_id": "HUMAYUN_CE_001",
+      "monument": "Humayun's Tomb",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "arcade",
+      "registration_region_label": "arcade / lower facade",
+      "registration_trust": "LOCALLY_RECOVERABLE",
+      "bbox_xywh_in_inference_image": [
+        718,
+        222,
+        8,
+        25
+      ],
+      "area_px": 166,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "MEDIUM_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 183.0421686746988,
+        "mean_gradient_difference": 31.867469879518072,
+        "signal_agreement_fraction": 0.9698795180722891,
+        "gradient_agreement_fraction": 0.10843373493975904,
+        "edge_change_fraction": 0.963855421686747,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 93,
+        "region_global_inliers": 13,
+        "region_global_rmse_px": 1.922361969947815,
+        "local_transform_valid": true,
+        "local_transform_inliers": 81,
+        "local_transform_rmse_px": 1.313382863998413
+      },
+      "uncertainty_indicators": [
+        "local_registration_recoverable_not_primary_global_trust"
+      ],
+      "provenance": {
+        "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+        "archival_source": "archival.jpg",
+        "archival_date": null,
+        "archival_author": null,
+        "archival_source_url": null,
+        "archival_license": null,
+        "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+        "modern_source": "in_Delhi-Front_view.jpg",
+        "modern_date": null,
+        "modern_source_url": null,
+        "modern_license": null,
+        "trust_region_metrics": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/trust_region_metrics.json",
+        "registered_archival_image": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_humayun_v1"
+      }
+    },
+    {
+      "candidate_id": "HUMAYUN_CE_002",
+      "monument": "Humayun's Tomb",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "arcade",
+      "registration_region_label": "arcade / lower facade",
+      "registration_trust": "LOCALLY_RECOVERABLE",
+      "bbox_xywh_in_inference_image": [
+        757,
+        222,
+        8,
+        25
+      ],
+      "area_px": 163,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "MEDIUM_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 190.30061349693253,
+        "mean_gradient_difference": 38.08588957055215,
+        "signal_agreement_fraction": 0.9877300613496932,
+        "gradient_agreement_fraction": 0.1656441717791411,
+        "edge_change_fraction": 0.9693251533742331,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 93,
+        "region_global_inliers": 13,
+        "region_global_rmse_px": 1.922361969947815,
+        "local_transform_valid": true,
+        "local_transform_inliers": 81,
+        "local_transform_rmse_px": 1.313382863998413
+      },
+      "uncertainty_indicators": [
+        "local_registration_recoverable_not_primary_global_trust"
+      ],
+      "provenance": {
+        "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+        "archival_source": "archival.jpg",
+        "archival_date": null,
+        "archival_author": null,
+        "archival_source_url": null,
+        "archival_license": null,
+        "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+        "modern_source": "in_Delhi-Front_view.jpg",
+        "modern_date": null,
+        "modern_source_url": null,
+        "modern_license": null,
+        "trust_region_metrics": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/trust_region_metrics.json",
+        "registered_archival_image": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_humayun_v1"
+      }
+    },
+    {
+      "candidate_id": "HUMAYUN_CE_007",
+      "monument": "Humayun's Tomb",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "central_facade_iwan",
+      "registration_region_label": "central facade / iwan",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        557,
+        261,
+        22,
+        10
+      ],
+      "area_px": 122,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "MEDIUM_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 161.52459016393442,
+        "mean_gradient_difference": 44.795081967213115,
+        "signal_agreement_fraction": 1.0,
+        "gradient_agreement_fraction": 0.2459016393442623,
+        "edge_change_fraction": 1.0,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 269,
+        "region_global_inliers": 144,
+        "region_global_rmse_px": 1.6453648805618286,
+        "local_transform_valid": true,
+        "local_transform_inliers": 163,
+        "local_transform_rmse_px": 1.1748331785202026
+      },
+      "uncertainty_indicators": [],
+      "provenance": {
+        "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+        "archival_source": "archival.jpg",
+        "archival_date": null,
+        "archival_author": null,
+        "archival_source_url": null,
+        "archival_license": null,
+        "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+        "modern_source": "in_Delhi-Front_view.jpg",
+        "modern_date": null,
+        "modern_source_url": null,
+        "modern_license": null,
+        "trust_region_metrics": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/trust_region_metrics.json",
+        "registered_archival_image": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_humayun_v1"
+      }
+    },
+    {
+      "candidate_id": "HUMAYUN_CE_006",
+      "monument": "Humayun's Tomb",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "central_facade_iwan",
+      "registration_region_label": "central facade / iwan",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        520,
+        261,
+        17,
+        8
+      ],
+      "area_px": 109,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "LOW_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 181.13761467889907,
+        "mean_gradient_difference": 27.211009174311926,
+        "signal_agreement_fraction": 0.981651376146789,
+        "gradient_agreement_fraction": 0.11009174311926606,
+        "edge_change_fraction": 0.9174311926605505,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 269,
+        "region_global_inliers": 144,
+        "region_global_rmse_px": 1.6453648805618286,
+        "local_transform_valid": true,
+        "local_transform_inliers": 163,
+        "local_transform_rmse_px": 1.1748331785202026
+      },
+      "uncertainty_indicators": [],
+      "provenance": {
+        "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+        "archival_source": "archival.jpg",
+        "archival_date": null,
+        "archival_author": null,
+        "archival_source_url": null,
+        "archival_license": null,
+        "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+        "modern_source": "in_Delhi-Front_view.jpg",
+        "modern_date": null,
+        "modern_source_url": null,
+        "modern_license": null,
+        "trust_region_metrics": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/trust_region_metrics.json",
+        "registered_archival_image": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_humayun_v1"
+      }
+    },
+    {
+      "candidate_id": "HUMAYUN_CE_008",
+      "monument": "Humayun's Tomb",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "central_facade_iwan",
+      "registration_region_label": "central facade / iwan",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        325,
+        263,
+        16,
+        11
+      ],
+      "area_px": 101,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "LOW_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 166.83168316831683,
+        "mean_gradient_difference": 42.81188118811881,
+        "signal_agreement_fraction": 1.0,
+        "gradient_agreement_fraction": 0.26732673267326734,
+        "edge_change_fraction": 1.0,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 269,
+        "region_global_inliers": 144,
+        "region_global_rmse_px": 1.6453648805618286,
+        "local_transform_valid": true,
+        "local_transform_inliers": 163,
+        "local_transform_rmse_px": 1.1748331785202026
+      },
+      "uncertainty_indicators": [],
+      "provenance": {
+        "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+        "archival_source": "archival.jpg",
+        "archival_date": null,
+        "archival_author": null,
+        "archival_source_url": null,
+        "archival_license": null,
+        "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+        "modern_source": "in_Delhi-Front_view.jpg",
+        "modern_date": null,
+        "modern_source_url": null,
+        "modern_license": null,
+        "trust_region_metrics": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/trust_region_metrics.json",
+        "registered_archival_image": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_humayun_v1"
+      }
+    },
+    {
+      "candidate_id": "HUMAYUN_CE_004",
+      "monument": "Humayun's Tomb",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "arcade",
+      "registration_region_label": "arcade / lower facade",
+      "registration_trust": "LOCALLY_RECOVERABLE",
+      "bbox_xywh_in_inference_image": [
+        237,
+        229,
+        8,
+        21
+      ],
+      "area_px": 95,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "LOW_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 181.07368421052632,
+        "mean_gradient_difference": 53.33684210526316,
+        "signal_agreement_fraction": 1.0,
+        "gradient_agreement_fraction": 0.37894736842105264,
+        "edge_change_fraction": 0.9578947368421052,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 93,
+        "region_global_inliers": 13,
+        "region_global_rmse_px": 1.922361969947815,
+        "local_transform_valid": true,
+        "local_transform_inliers": 81,
+        "local_transform_rmse_px": 1.313382863998413
+      },
+      "uncertainty_indicators": [
+        "local_registration_recoverable_not_primary_global_trust"
+      ],
+      "provenance": {
+        "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+        "archival_source": "archival.jpg",
+        "archival_date": null,
+        "archival_author": null,
+        "archival_source_url": null,
+        "archival_license": null,
+        "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+        "modern_source": "in_Delhi-Front_view.jpg",
+        "modern_date": null,
+        "modern_source_url": null,
+        "modern_license": null,
+        "trust_region_metrics": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/trust_region_metrics.json",
+        "registered_archival_image": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_humayun_v1"
+      }
+    },
+    {
+      "candidate_id": "HUMAYUN_CE_003",
+      "monument": "Humayun's Tomb",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "arcade",
+      "registration_region_label": "arcade / lower facade",
+      "registration_trust": "LOCALLY_RECOVERABLE",
+      "bbox_xywh_in_inference_image": [
+        598,
+        227,
+        8,
+        14
+      ],
+      "area_px": 92,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "LOW_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 203.3804347826087,
+        "mean_gradient_difference": 23.73913043478261,
+        "signal_agreement_fraction": 0.9782608695652174,
+        "gradient_agreement_fraction": 0.09782608695652174,
+        "edge_change_fraction": 0.9782608695652174,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 93,
+        "region_global_inliers": 13,
+        "region_global_rmse_px": 1.922361969947815,
+        "local_transform_valid": true,
+        "local_transform_inliers": 81,
+        "local_transform_rmse_px": 1.313382863998413
+      },
+      "uncertainty_indicators": [
+        "local_registration_recoverable_not_primary_global_trust"
+      ],
+      "provenance": {
+        "archival_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/archival.jpg",
+        "archival_source": "archival.jpg",
+        "archival_date": null,
+        "archival_author": null,
+        "archival_source_url": null,
+        "archival_license": null,
+        "modern_file": "/home/radhika/Documents/dtheritage/data/humayun/pairs/pair02_archA_wide_front/modern.jpg",
+        "modern_source": "in_Delhi-Front_view.jpg",
+        "modern_date": null,
+        "modern_source_url": null,
+        "modern_license": null,
+        "trust_region_metrics": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/trust_region_metrics.json",
+        "registered_archival_image": "/home/radhika/Documents/dtheritage/outputs/registration/trust_region_pair02/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_humayun_v1"
+      }
+    }
+  ],
+  "runtime_seconds": 0.22114828000030684
+}

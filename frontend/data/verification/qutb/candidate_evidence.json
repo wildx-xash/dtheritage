@@ -1,0 +1,24 @@
+{
+  "experiment": "candidate_visible_change_evidence_qutb",
+  "timestamp_utc": "2026-08-22T16:08:33.219096+00:00",
+  "decision": "NO_CHANGE_EVIDENCE_GENERATED",
+  "monument": "Qutb Minar / Qutb Complex",
+  "registration_gate": "No tested Qutb pair passed global homography validity; bounded local registration and change extraction were not attempted.",
+  "tested_registration_metrics": [
+    "/home/radhika/Documents/dtheritage/outputs/registration/qutb/loftr_pairs/tower_full_1858_2008/metrics.json",
+    "/home/radhika/Documents/dtheritage/outputs/registration/qutb/loftr_pairs/tower_detail_1860_2015/metrics.json",
+    "/home/radhika/Documents/dtheritage/outputs/registration/qutb/loftr_pairs/tower_full_1858_2017_negative/metrics.json"
+  ],
+  "candidate_count": 0,
+  "candidate_counts_by_strength": {
+    "HIGH_EVIDENCE": 0,
+    "MEDIUM_EVIDENCE": 0,
+    "LOW_EVIDENCE": 0
+  },
+  "candidates": [],
+  "uncertainty_and_failure_factors": [
+    "insufficient spatial distribution of global inliers for the full-height pair",
+    "invalid folded / vanishing-line-crossing transforms for detail and steep-view pairs",
+    "tower curvature, depth variation, and viewpoint difference require future human-guided local landmark input"
+  ]
+}

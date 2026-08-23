@@ -1,0 +1,815 @@
+{
+  "experiment": "candidate_visible_change_evidence_sanchi",
+  "timestamp_utc": "2026-08-22T16:04:43.049503+00:00",
+  "decision": "CHANGE_EVIDENCE_PIPELINE_VIABLE",
+  "inputs": {
+    "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+    "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+    "registered_archival": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+    "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json"
+  },
+  "valid_comparison_area": {
+    "included_tiers": [
+      "LOCALLY_RECOVERABLE",
+      "TRUSTED"
+    ],
+    "included_regions": [
+      {
+        "region_id": "eastern_torana",
+        "trust_tier": "TRUSTED",
+        "box_px": [
+          105,
+          40,
+          578,
+          440
+        ],
+        "local_transform_valid": true
+      },
+      {
+        "region_id": "torana_crossbars",
+        "trust_tier": "TRUSTED",
+        "box_px": [
+          120,
+          50,
+          562,
+          290
+        ],
+        "local_transform_valid": true
+      },
+      {
+        "region_id": "stupa_background",
+        "trust_tier": "TRUSTED",
+        "box_px": [
+          390,
+          100,
+          750,
+          440
+        ],
+        "local_transform_valid": true
+      }
+    ],
+    "excluded_regions": [
+      {
+        "region_id": "sky_and_archival_border",
+        "trust_tier": "UNSUPPORTED",
+        "box_px": [
+          0,
+          0,
+          750,
+          80
+        ]
+      }
+    ],
+    "valid_area_px": 174380,
+    "flagged_area_px": 5915,
+    "flagged_fraction_of_valid_area": 0.033920174331918795
+  },
+  "method": {
+    "photometric_normalisation": "Grayscale histogram matching of registered archival to modern within valid comparison mask, followed by CLAHE clipLimit=2.0 tileGridSize=8x8.",
+    "signals": [
+      "absolute normalized intensity difference",
+      "Sobel gradient magnitude difference",
+      "Canny edge-change support"
+    ],
+    "thresholds": {
+      "intensity_diff_percentile_inside_valid_mask": 88,
+      "resolved_intensity_threshold": 127,
+      "gradient_diff_percentile_inside_valid_mask": 75,
+      "resolved_gradient_threshold": 45,
+      "min_candidate_area_px": 90,
+      "mask_erode_px": 5
+    },
+    "false_positive_controls": [
+      "valid registration mask",
+      "invalid warp exclusion",
+      "exclusion of MARGINAL/UNTRUSTED/UNSUPPORTED trust regions",
+      "conservative HSV vegetation suppression",
+      "agreement between intensity and gradient/edge signals",
+      "morphological opening/closing",
+      "minimum connected-component area"
+    ],
+    "evidence_strength_rule": "HIGH requires TRUSTED registration, area >= 250 px, mean signal >= 70 and agreement >= 0.45; MEDIUM requires area >= 120 px, mean signal >= 50 and agreement >= 0.30; otherwise LOW."
+  },
+  "candidate_count": 11,
+  "candidate_counts_by_strength": {
+    "HIGH_EVIDENCE": 4,
+    "MEDIUM_EVIDENCE": 4,
+    "LOW_EVIDENCE": 3
+  },
+  "candidate_counts_by_region": {
+    "eastern_torana": 11,
+    "torana_crossbars": 0,
+    "stupa_background": 0
+  },
+  "manual_inspection_notes": [
+    "Candidates overlapping hedges/trees are suppressed where detected, but vegetation and visitor occlusion can still leak into architectural candidates.",
+    "Candidate categories are coarse proposals for human review, not damage labels."
+  ],
+  "candidates": [
+    {
+      "candidate_id": "SANCHI_CE_007",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        504,
+        300,
+        65,
+        73
+      ],
+      "area_px": 2527,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "HIGH_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 144.6367233874159,
+        "mean_gradient_difference": 25.563118322121092,
+        "signal_agreement_fraction": 0.9730906212900673,
+        "gradient_agreement_fraction": 0.13375544123466562,
+        "edge_change_fraction": 0.9730906212900673,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_001",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        450,
+        146,
+        35,
+        34
+      ],
+      "area_px": 578,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "HIGH_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 176.9083044982699,
+        "mean_gradient_difference": 17.59515570934256,
+        "signal_agreement_fraction": 0.9342560553633218,
+        "gradient_agreement_fraction": 0.05536332179930796,
+        "edge_change_fraction": 0.9238754325259516,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_006",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        205,
+        299,
+        72,
+        20
+      ],
+      "area_px": 428,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "HIGH_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 170.83878504672896,
+        "mean_gradient_difference": 36.27336448598131,
+        "signal_agreement_fraction": 1.0,
+        "gradient_agreement_fraction": 0.3411214953271028,
+        "edge_change_fraction": 0.9813084112149533,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_010",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        107,
+        404,
+        25,
+        31
+      ],
+      "area_px": 274,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "HIGH_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 171.62408759124088,
+        "mean_gradient_difference": 59.54014598540146,
+        "signal_agreement_fraction": 0.9051094890510949,
+        "gradient_agreement_fraction": 0.4489051094890511,
+        "edge_change_fraction": 0.8503649635036497,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_004",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        148,
+        251,
+        19,
+        18
+      ],
+      "area_px": 246,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "MEDIUM_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 155.1382113821138,
+        "mean_gradient_difference": 47.829268292682926,
+        "signal_agreement_fraction": 1.0,
+        "gradient_agreement_fraction": 0.45528455284552843,
+        "edge_change_fraction": 1.0,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_002",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        144,
+        179,
+        41,
+        9
+      ],
+      "area_px": 213,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "MEDIUM_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 186.68075117370893,
+        "mean_gradient_difference": 53.51643192488263,
+        "signal_agreement_fraction": 0.8779342723004695,
+        "gradient_agreement_fraction": 0.352112676056338,
+        "edge_change_fraction": 0.8732394366197183,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_005",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        393,
+        290,
+        40,
+        10
+      ],
+      "area_px": 170,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "MEDIUM_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 168.36470588235295,
+        "mean_gradient_difference": 33.51764705882353,
+        "signal_agreement_fraction": 0.9529411764705882,
+        "gradient_agreement_fraction": 0.23529411764705882,
+        "edge_change_fraction": 0.9,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_011",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        414,
+        409,
+        24,
+        28
+      ],
+      "area_px": 162,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "MEDIUM_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 163.73456790123456,
+        "mean_gradient_difference": 29.790123456790123,
+        "signal_agreement_fraction": 0.9567901234567902,
+        "gradient_agreement_fraction": 0.25925925925925924,
+        "edge_change_fraction": 0.9197530864197531,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_003",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        458,
+        227,
+        18,
+        15
+      ],
+      "area_px": 108,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "LOW_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 151.87962962962962,
+        "mean_gradient_difference": 24.296296296296298,
+        "signal_agreement_fraction": 0.9814814814814815,
+        "gradient_agreement_fraction": 0.1388888888888889,
+        "edge_change_fraction": 0.9814814814814815,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_008",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        529,
+        391,
+        8,
+        13
+      ],
+      "area_px": 103,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "LOW_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 150.44660194174756,
+        "mean_gradient_difference": 74.0873786407767,
+        "signal_agreement_fraction": 1.0,
+        "gradient_agreement_fraction": 0.7378640776699029,
+        "edge_change_fraction": 1.0,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    },
+    {
+      "candidate_id": "SANCHI_CE_009",
+      "monument": "Sanchi Stupa / Eastern Torana",
+      "archival_image": "archival.jpg",
+      "modern_image": "modern.jpg",
+      "registration_experiment_id": "bounded_local_geometry_trust_region_registration",
+      "registration_region": "eastern_torana",
+      "registration_region_label": "eastern gateway / torana",
+      "registration_trust": "TRUSTED",
+      "bbox_xywh_in_inference_image": [
+        546,
+        390,
+        24,
+        7
+      ],
+      "area_px": 99,
+      "change_type": "structural_appearance_difference",
+      "evidence_strength": "LOW_EVIDENCE",
+      "review_status": "PENDING_REVIEW",
+      "review": {
+        "machine_proposed_category": "candidate_visible_change_evidence",
+        "reviewer_decision": null,
+        "reviewer_category": null,
+        "reviewer_notes": null,
+        "review_timestamp": null
+      },
+      "signals": {
+        "mean_normalized_intensity_difference": 176.87878787878788,
+        "mean_gradient_difference": 65.84848484848484,
+        "signal_agreement_fraction": 1.0,
+        "gradient_agreement_fraction": 0.7171717171717171,
+        "edge_change_fraction": 1.0,
+        "green_vegetation_overlap_fraction": 0.0
+      },
+      "registration_support": {
+        "region_filtered_correspondences": 524,
+        "region_global_inliers": 346,
+        "region_global_rmse_px": 1.508257508277893,
+        "local_transform_valid": true,
+        "local_transform_inliers": 352,
+        "local_transform_rmse_px": 1.5204728841781616
+      },
+      "uncertainty_indicators": [
+        "archival_photographic_print_and_photometric_variation",
+        "residual_viewpoint_and_scale_difference"
+      ],
+      "provenance": {
+        "archival_file": "data/sanchi/pairs/gateway_front_1863_2015/archival.jpg",
+        "archival_source": "sanchi_sh01_1863.jpg (orientation normalized +90 degrees for comparison)",
+        "archival_date": "1863",
+        "archival_author": "James John Waterhouse",
+        "archival_source_url": "https://www.rijksmuseum.nl/en/collection/object/Eastern-gateway-torana-of-the-Great-Stupa-at-Sanchi-Madhya-Pradesh-India--90abcf51df2ab2becbc000afaabd8fc2?utm_source=chatgpt.com&tab=data",
+        "archival_license": "Public Domain",
+        "modern_file": "data/sanchi/pairs/gateway_front_1863_2015/modern.jpg",
+        "modern_source": "sanchi_sm01_2015.jpg",
+        "modern_date": "2015",
+        "modern_author": "unknown",
+        "modern_source_url": "https://www.tripinvites.com/places/sanchi/the-eastern-gateway/photos-of-the-eastern-gateway/",
+        "modern_license": "Public Domain",
+        "trust_region_metrics": "outputs/registration/sanchi/trust_region_gateway_1863_2015/trust_region_metrics.json",
+        "registered_archival_image": "outputs/registration/sanchi/trust_region_gateway_1863_2015/04_registered_global.jpg",
+        "change_analysis_method_version": "change_evidence_sanchi_v1"
+      }
+    }
+  ],
+  "runtime_seconds": 0.4266862859999492
+}

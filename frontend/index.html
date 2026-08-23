@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DTHeritage — Conservation Intelligence Archive</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo">
+          ◈ DTHeritage
+        </div>
+        <div class="sidebar-subtitle">Conservation Intel.</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div>
+          <div class="nav-group-title">Overview</div>
+          <ul class="nav-list">
+            <li>
+              <a href="#" class="nav-item active" data-target="portfolio">
+                <span class="nav-item-icon">◉</span> Portfolio Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-item" data-target="timeline">
+                <span class="nav-item-icon">◇</span> Monuments & Timeline
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <div class="nav-group-title">Analysis Stack</div>
+          <ul class="nav-list">
+            <li>
+              <a href="#" class="nav-item" data-target="comparison">
+                <span class="nav-item-icon">◇</span> Image Comparison
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-item" data-target="registration">
+                <span class="nav-item-icon">◇</span> LoFTR Registration
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-item" data-target="review">
+                <span class="nav-item-icon">◇</span> Evidence Review Queue
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <div class="nav-group-title">Provenance</div>
+          <ul class="nav-list">
+            <li>
+              <a href="#" class="nav-item" data-target="provenance">
+                <span class="nav-item-icon">◇</span> Archive Ledger
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-title">SIH 2026 PROTOTYPE</div>
+        <div class="sidebar-footer-desc">Heritage & Culture · Team 6</div>
+      </div>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- HEADER BANNER -->
+      <header class="content-header">
+        <div class="header-title-container">
+          <h1 id="page-title" class="header-title">Conservation Intelligence</h1>
+          <span id="page-subtitle" class="header-subtitle">A digital archive of India's changing heritage structures.</span>
+        </div>
+        <div class="header-actions">
+          <div class="custom-select-container" id="global-monument-selector-container" style="display:none;">
+            <label class="custom-select-label" for="monument-select">Select Monument:</label>
+            <select id="monument-select" class="archival-select">
+              <option value="humayun">Humayun's Tomb (Testbed)</option>
+              <option value="sanchi">Sanchi Stupa (Gateways)</option>
+              <option value="qutb">Qutb Minar Complex</option>
+            </select>
+          </div>
+          <div class="hero-status-pill">
+            <span class="status-dot success"></span>
+            <span>LoFTR FEASIBILITY: SUCCESSFUL</span>
+          </div>
+        </div>
+      </header>
+      
+      <!-- SCREEN 1: PORTFOLIO DASHBOARD -->
+      <section id="portfolio-view" class="view-container active">
+        <div class="grid-2">
+          
+          <!-- Large Stats / Hero -->
+          <div class="dashboard-hero">
+            <div class="dashboard-hero-content">
+              <div>
+                <span class="hero-header-label">Digital Conservation Archive</span>
+                <h2 class="hero-title">Heritage Conservation Portfolio</h2>
+                <p>Curating historical and contemporary photographs as auditable input for bounded, human-reviewed conservation comparison.</p>
+              </div>
+              
+              <div class="hero-stats-row">
+                <div class="hero-stat-box">
+                  <span class="hero-stat-val">03</span>
+                  <span class="hero-stat-lbl">Active Monuments</span>
+                </div>
+                <div class="hero-stat-box">
+                  <span class="hero-stat-val">18 <span>images</span></span>
+                  <span class="hero-stat-lbl">Curated Source Images</span>
+                </div>
+                <div class="hero-stat-box">
+                  <span class="hero-stat-val">00</span>
+                  <span class="hero-stat-lbl">Verified Reviews</span>
+                </div>
+                <div class="hero-stat-box">
+                  <span class="hero-stat-val">00 <span>available</span></span>
+                  <span class="hero-stat-lbl">Verified Evidence Queue</span>
+                </div>
+              </div>
+              
+              <div>
+                <button class="btn btn-terracotta" onclick="switchView('timeline')">Open Archive Timelines →</button>
+              </div>
+            </div>
+            
+            <!-- Visual Anchor Photo -->
+            <div class="hero-photo-anchor" onclick="switchView('comparison')">
+              <div class="hero-photo-wrapper">
+                <img src="assets/humayun_archival.jpg" alt="Humayun's Tomb Archival" class="hero-photo-img">
+                <div class="accession-stamp">HT-1860-01</div>
+              </div>
+              <span class="hero-photo-caption">Humayun's Tomb, Delhi · Circa 1860 · British Library Plate</span>
+            </div>
+          </div>
+          
+          <!-- Monument Register -->
+          <div class="archive-card" style="grid-column: span 2;">
+            <div class="accession-stamp stamp-brass">Portfolio Index</div>
+            <h3 class="archive-card-title">Registered Indian Monument Portfolio</h3>
+            
+            <div class="archival-table-container">
+              <table class="archival-table">
+                <thead>
+                  <tr>
+                    <th>Catalog Code</th>
+                    <th>Monument Name</th>
+                    <th>Location</th>
+                    <th>Date Stack</th>
+                    <th>LoFTR Inliers</th>
+                    <th>Validation Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="cursor: pointer;" onclick="loadMonument('humayun')">
+                    <td>#HT-DEL-01</td>
+                    <td class="monument-name">Humayun's Tomb</td>
+                    <td>Delhi</td>
+                    <td>1860 – 2026</td>
+                    <td>182 Inliers (0.528 ratio)</td>
+                    <td><span class="badge badge-success">Facade baseline validated</span></td>
+                    <td><button class="btn btn-sm btn-outline" onclick="loadMonument('humayun'); event.stopPropagation();">Inspect</button></td>
+                  </tr>
+                  <tr style="cursor: pointer;" onclick="loadMonument('sanchi')">
+                    <td>#SS-MP-02</td>
+                    <td class="monument-name">Sanchi Stupa / Toranas</td>
+                    <td>Madhya Pradesh</td>
+                    <td>1890 – 2026</td>
+                    <td>Output not verified</td>
+                    <td><span class="badge badge-warning">Awaiting output bundle</span></td>
+                    <td><button class="btn btn-sm btn-outline" onclick="loadMonument('sanchi'); event.stopPropagation();">Inspect</button></td>
+                  </tr>
+                  <tr style="cursor: pointer;" onclick="loadMonument('qutb')">
+                    <td>#QM-DEL-03</td>
+                    <td class="monument-name">Qutb Minar Complex</td>
+                    <td>Delhi</td>
+                    <td>1870 – 2026</td>
+                    <td>Output not verified</td>
+                    <td><span class="badge badge-warning">Awaiting output bundle</span></td>
+                    <td><button class="btn btn-sm btn-outline" onclick="loadMonument('qutb'); event.stopPropagation();">Inspect</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- SIFT Failure vs LoFTR Success Box -->
+          <div class="archive-card" style="grid-column: span 2;">
+            <div class="accession-stamp">Feasibility Summary</div>
+            <h3 class="archive-card-title">Registration Feasibility & Algorithmic Narrative</h3>
+            <p style="margin-bottom: 16px;">Classical descriptor matchers (Vanilla SIFT, SIFT with CLAHE / RootSIFT) failed entirely across the 160-year temporal domain gap due to major lighting, vegetative, and focal variations. The deep learning-based detector-free matcher (LoFTR Outdoor) successfully recovered dense correspondences, validating our geometric pipeline.</p>
+            
+            <div class="grid-3">
+              <div style="border-right: 1px solid var(--border-sandstone); padding-right: 16px;">
+                <h4 style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--color-error); margin-bottom: 8px;">1. Vanilla SIFT</h4>
+                <p style="font-size: 0.8rem; line-height: 1.4;">9 RANSAC inliers. collapsed homography, completely broken alignment. descriptor match failed across eras.</p>
+              </div>
+              <div style="border-right: 1px solid var(--border-sandstone); padding: 0 16px;">
+                <h4 style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--color-warning); margin-bottom: 8px;">2. Improved Classical SIFT</h4>
+                <p style="font-size: 0.8rem; line-height: 1.4;">CLAHE normalization + RootSIFT + mutual matching. 4 RANSAC inliers, degenerate matrix. Classical tuning unjustified.</p>
+              </div>
+              <div style="padding-left: 16px;">
+                <h4 style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--color-success); margin-bottom: 8px;">3. LoFTR (Outdoor weights)</h4>
+                <p style="font-size: 0.8rem; line-height: 1.4;">182 RANSAC inliers, 0.528 ratio. Valid homography on the main facade. Viewpoint limitations on dome/ground.</p>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      
+      <!-- SCREEN 2: MONUMENTS & TIMELINE -->
+      <section id="timeline-view" class="view-container">
+        
+        <!-- Timeline Slider Container -->
+        <div class="timeline-slider-container">
+          <div class="timeline-ticks-row">
+            <h3 class="archive-card-title" id="timeline-monument-name">Humayun's Tomb — Archival Timeline</h3>
+            <p>Select a historical epoch to inspect the photo record, origin details, and conservation documentation.</p>
+            
+            <div class="timeline-axis">
+              <div class="timeline-axis-progress" id="timeline-progress"></div>
+              <ul class="timeline-ticks">
+                <li class="timeline-tick-node active" data-index="0" onclick="setTimelineIndex(0)">
+                  <span class="timeline-tick-desc">Archival Base</span>
+                  <span class="timeline-tick-label" id="tick-yr-0">1860</span>
+                </li>
+                <li class="timeline-tick-node" data-index="1" onclick="setTimelineIndex(1)">
+                  <span class="timeline-tick-desc">Survey Era</span>
+                  <span class="timeline-tick-label" id="tick-yr-1">1900</span>
+                </li>
+                <li class="timeline-tick-node" data-index="2" onclick="setTimelineIndex(2)">
+                  <span class="timeline-tick-desc">Mid-Century</span>
+                  <span class="timeline-tick-label" id="tick-yr-2">1947</span>
+                </li>
+                <li class="timeline-tick-node" data-index="3" onclick="setTimelineIndex(3)">
+                  <span class="timeline-tick-desc">UNESCO Inscription</span>
+                  <span class="timeline-tick-label" id="tick-yr-3">1993</span>
+                </li>
+                <li class="timeline-tick-node" data-index="4" onclick="setTimelineIndex(4)">
+                  <span class="timeline-tick-desc">Contemporary</span>
+                  <span class="timeline-tick-label" id="tick-yr-4">2026</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Two Column Details -->
+        <div class="timeline-detail-box">
+          
+          <div class="timeline-detail-image-card">
+            <div class="accession-stamp" id="timeline-record-stamp">HT-1860-01</div>
+            <div class="timeline-detail-image-wrapper">
+              <img id="timeline-photo-el" src="assets/humayun_archival.jpg" alt="Archival View" class="timeline-detail-img">
+            </div>
+          </div>
+          
+          <div class="timeline-detail-info">
+            <div>
+              <div class="archive-stamp-title">Archival Record Plate</div>
+              <h2 id="timeline-record-title" class="heading-serif" style="font-size: 2.2rem; margin-bottom: 8px;">Southern Facade Plate</h2>
+              <div class="archival-divider"><span class="divider-motif">◇</span></div>
+              <p id="timeline-record-desc" class="timeline-detail-text">Archival record plate from the British Library collection. Photographed by John Burke. Captures the main southern facade, highlighting the double dome and flanking arched bays. This serves as the primary geometric baseline for change intelligence.</p>
+            </div>
+            
+            <div class="timeline-meta-grid">
+              <div class="timeline-meta-item">
+                <span class="timeline-meta-lbl">Photographer / Author</span>
+                <span class="timeline-meta-val" id="timeline-meta-author">John Burke</span>
+              </div>
+              <div class="timeline-meta-item">
+                <span class="timeline-meta-lbl">Date of Capture</span>
+                <span class="timeline-meta-val" id="timeline-meta-date">Circa 1860</span>
+              </div>
+              <div class="timeline-meta-item">
+                <span class="timeline-meta-lbl">Archive Source</span>
+                <span class="timeline-meta-val" id="timeline-meta-source">British Library</span>
+              </div>
+              <div class="timeline-meta-item">
+                <span class="timeline-meta-lbl">License Status</span>
+                <span class="timeline-meta-val" id="timeline-meta-license">Public Domain</span>
+              </div>
+              <div class="timeline-meta-item" style="grid-column: span 2;">
+                <span class="timeline-meta-lbl">Conservator Viewpoint Notes</span>
+                <span class="timeline-meta-val" id="timeline-meta-notes">Uncalibrated camera, unknown focal length. Flat view of the main sandstone facade. Parasitic vegetation noted near dome base.</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      
+      <!-- SCREEN 3: IMAGE COMPARISON -->
+      <section id="comparison-view" class="view-container">
+        <div class="comparison-layout">
+          
+          <!-- Viewer Area -->
+          <div class="comparison-pane">
+            <div class="comparison-toolbar">
+              <div class="comparison-view-mode">
+                <button id="btn-mode-sbs" class="view-mode-btn active" onclick="setComparisonMode('sbs')">Side-by-Side</button>
+                <button id="btn-mode-overlay" class="view-mode-btn" onclick="setComparisonMode('overlay')">Overlay Slider</button>
+              </div>
+              
+              <div class="match-toggle-container">
+                <span class="switch-label">LoFTR Correspondence Overlay</span>
+                <label class="switch">
+                  <input type="checkbox" id="toggle-loftr-matches" onchange="toggleLoFTRMatches(this.checked)">
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- Main Window Frame -->
+            <div class="comparison-viewer-frame" id="comparison-viewer">
+              
+              <!-- Side-by-Side Layer -->
+              <div class="comparison-sbs" id="panel-sbs">
+                <div class="sbs-half">
+                  <img id="comp-img-left" src="assets/humayun_archival.jpg" alt="Archival" class="sbs-img">
+                  <span class="sbs-label" id="lbl-sbs-left">ARCHIVAL (1860)</span>
+                </div>
+                <div class="sbs-half" style="border-right: none;">
+                  <img id="comp-img-right" src="assets/humayun_modern.jpg" alt="Modern" class="sbs-img">
+                  <span class="sbs-label" id="lbl-sbs-right">MODERN (2026)</span>
+                </div>
+              </div>
+              
+              <!-- Overlay Slider Layer -->
+              <div class="comparison-overlay-container" id="panel-overlay">
+                <img id="comp-img-overlay-base" src="assets/humayun_modern.jpg" alt="Modern" class="overlay-img-base">
+                <img id="comp-img-overlay-top" src="assets/humayun_archival.jpg" alt="Archival" class="overlay-img-top">
+                <div class="slider-handle" id="slider-drag-handle">
+                  <div class="slider-button">⇄</div>
+                </div>
+              </div>
+              
+              <!-- Match lines canvas overlay -->
+              <canvas id="loftr-canvas" class="correspondences-canvas"></canvas>
+              
+            </div>
+            
+            <div>
+              <p style="font-size: 0.8rem; font-style: italic;">* Note: The overlay slider is registered utilizing the LoFTR-derived homography matrix for the main facade plane. Parallax artifacts are visible on the background dome and the foreground garden elements.</p>
+            </div>
+          </div>
+          
+          <!-- Info Sidebar -->
+          <div class="comparison-stats-pane">
+            <div class="archive-card">
+              <div class="accession-stamp stamp-brass">Registration Status</div>
+              <h3 class="archive-card-title">Alignment Details</h3>
+              
+              <div class="status-value-box">
+                <span class="status-value-title">Inlier Ratio</span>
+                <span class="status-value-data" id="comp-inlier-ratio">52.8%</span>
+              </div>
+              
+              <div style="margin-top: 16px;">
+                <div class="comparison-metric-item">
+                  <span class="comparison-metric-label">Predicted Points</span>
+                  <span class="comparison-metric-val" id="comp-predicted-pts">658</span>
+                </div>
+                <div class="comparison-metric-item">
+                  <span class="comparison-metric-label">RANSAC Inliers</span>
+                  <span class="comparison-metric-val" id="comp-ransac-inliers">182</span>
+                </div>
+                <div class="comparison-metric-item">
+                  <span class="comparison-metric-label">Reprojection RMSE</span>
+                  <span class="comparison-metric-val" id="comp-reproj-rmse">~1.67 px</span>
+                </div>
+                <div class="comparison-metric-item">
+                  <span class="comparison-metric-label">Facial Alignment</span>
+                  <span class="comparison-metric-val" style="color:var(--color-success);" id="comp-facade-align">Valid</span>
+                </div>
+                <div class="comparison-metric-item" style="border-bottom:none;">
+                  <span class="comparison-metric-label">Depth/Parallax Gap</span>
+                  <span class="comparison-metric-val" style="color:var(--color-warning);" id="comp-parallax-gap">Atypical</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="archive-card">
+              <h3 class="archive-card-title">Visible Changes</h3>
+              <p style="font-size: 0.8rem; margin-bottom: 12px;">Candidate change regions detected in the facade area plane:</p>
+              
+              <div class="candidate-changes-sidebar-list" id="candidate-changes-sidebar">
+                <!-- Javascript populated -->
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      
+      <!-- SCREEN 4: LOFTR REGISTRATION DIAGNOSTICS -->
+      <section id="registration-view" class="view-container">
+        <div class="registration-grid">
+          
+          <!-- Homography Matrix -->
+          <div class="scientific-matrix-box">
+            <div class="scientific-matrix-title">Estimated Homography Matrix (H)</div>
+            <p style="font-size: 0.75rem; color: rgba(244, 235, 221, 0.7); margin-bottom: 16px;">3x3 Perspective Projection Matrix computed from RANSAC inliers mapping historical coordinates into modern image space.</p>
+            
+            <div class="homography-matrix">
+              <div class="homography-row" id="h-row-0">
+                <span>0.84221</span>
+                <span>-0.01254</span>
+                <span>241.521</span>
+              </div>
+              <div class="homography-row" id="h-row-1">
+                <span>0.01524</span>
+                <span>0.83548</span>
+                <span>108.204</span>
+              </div>
+              <div class="homography-row" id="h-row-2">
+                <span>0.00012</span>
+                <span>0.00021</span>
+                <span>1.00000</span>
+              </div>
+            </div>
+            
+            <div class="scientific-matrix-footer">
+              <div>Condition Number: <span id="h-cond">~1.90e4</span></div>
+              <div style="margin-top: 4px;">Determinant: <span id="h-det">0.704</span></div>
+            </div>
+          </div>
+          
+          <!-- Diagnostic Charting -->
+          <div class="archive-card">
+            <div class="accession-stamp stamp-brass">Diagnostic Bounds</div>
+            <h3 class="archive-card-title">Geometric Registration Diagnostics</h3>
+            <p style="margin-bottom: 20px;">Analysis of RANSAC correspondence distribution, spatial coverage, and structural support ratios across the monument facade.</p>
+            
+            <div class="chart-vintage-bar-container">
+              
+              <div class="vintage-bar-wrapper">
+                <div class="vintage-bar-lbl-row">
+                  <span>Horizontal Support Spread (Width Coverage)</span>
+                  <span id="stat-h-support">82%</span>
+                </div>
+                <div class="vintage-bar-outline">
+                  <div class="vintage-bar-fill success" id="bar-h-support" style="width: 82%;"></div>
+                </div>
+              </div>
+              
+              <div class="vintage-bar-wrapper">
+                <div class="vintage-bar-lbl-row">
+                  <span>Vertical Support Spread (Height Coverage)</span>
+                  <span id="stat-v-support">18%</span>
+                </div>
+                <div class="vintage-bar-outline">
+                  <div class="vintage-bar-fill warning" id="bar-v-support" style="width: 18%;"></div>
+                </div>
+              </div>
+              
+              <div class="vintage-bar-wrapper">
+                <div class="vintage-bar-lbl-row">
+                  <span>Spatial Hull Coverage of Facade Plane</span>
+                  <span id="stat-hull-coverage">5.18%</span>
+                </div>
+                <div class="vintage-bar-outline">
+                  <div class="vintage-bar-fill warning" id="bar-hull-coverage" style="width: 51.8%;"></div>
+                </div>
+              </div>
+              
+              <div class="vintage-bar-wrapper">
+                <div class="vintage-bar-lbl-row">
+                  <span>Inlier Correspondence Confidence Mean</span>
+                  <span id="stat-conf-mean">84.2%</span>
+                </div>
+                <div class="vintage-bar-outline">
+                  <div class="vintage-bar-fill success" id="bar-conf-mean" style="width: 84.2%;"></div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+          <!-- Manual Fallback Box -->
+          <div class="manual-fallback-box">
+            <div class="fallback-content">
+              <h4 class="fallback-title">Initiate Manual Alignment Fallback</h4>
+              <p style="font-size: 0.85rem; color: var(--secondary-brown);">If automated LoFTR correspondences fail due to severe architectural modification or view angles, configure manual key landmark correspondences.</p>
+            </div>
+            <div>
+              <button class="btn btn-outline" style="border-color:var(--color-error); color:var(--color-error);" onclick="simulateManualAlignment()">Simulate Landmark Alignment</button>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      
+      <!-- SCREEN 5: EVIDENCE REVIEW QUEUE -->
+      <section id="review-view" class="view-container">
+        <div class="evidence-layout">
+          
+          <!-- Left side list -->
+          <div class="evidence-list-pane" id="evidence-queue-list">
+            <!-- Populated via Javascript -->
+          </div>
+          
+          <!-- Right side details -->
+          <div class="evidence-detail-pane" id="evidence-detail-panel">
+            <div class="accession-stamp" id="detail-ev-id">HT-EV-04</div>
+            <h3 class="archive-card-title" id="detail-ev-title">Candidate Change #04</h3>
+            
+            <div class="evidence-crop-box">
+              <div class="evidence-crop-half">
+                <span class="crop-lbl">Archival (1860)</span>
+                <div class="crop-img-container">
+                  <img id="detail-crop-archival" src="assets/humayun_archival.jpg" alt="Archival Detail" class="crop-img-el">
+                  <div class="crop-highlight-box" id="detail-crop-box-archival"></div>
+                </div>
+              </div>
+              
+              <div class="evidence-crop-half">
+                <span class="crop-lbl">Modern (2026)</span>
+                <div class="crop-img-container">
+                  <img id="detail-crop-modern" src="assets/humayun_modern.jpg" alt="Modern Detail" class="crop-img-el">
+                  <div class="crop-highlight-box" id="detail-crop-box-modern"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="evidence-meta-block">
+              <div class="evidence-meta-row">
+                <span class="evidence-meta-lbl">Detection Algorithm</span>
+                <span class="evidence-meta-val" id="detail-ev-algorithm">Facade Change / Difference Mask</span>
+              </div>
+              <div class="evidence-meta-row">
+                <span class="evidence-meta-lbl">Geometric Confidence</span>
+                <span class="evidence-meta-val" id="detail-ev-confidence">82%</span>
+              </div>
+              <div class="evidence-meta-row">
+                <span class="evidence-meta-lbl">Pixel Bounding Coordinates</span>
+                <span class="evidence-meta-val" id="detail-ev-coords">X: [520, 680], Y: [340, 480]</span>
+              </div>
+              <div class="evidence-meta-row">
+                <span class="evidence-meta-lbl">Structural Feature</span>
+                <span class="evidence-meta-val" id="detail-ev-feature">Chhatri Base Balustrade</span>
+              </div>
+              <div class="evidence-meta-row" style="border-bottom:none;">
+                <span class="evidence-meta-lbl">Review Status</span>
+                <span class="evidence-meta-val" id="detail-ev-status"><span class="badge badge-warning">Pending Review</span></span>
+              </div>
+              
+              <div class="vintage-bar-wrapper">
+                <div class="vintage-bar-lbl-row">
+                  <span>Confidence Level Score</span>
+                  <span id="detail-ev-bar-percent">82%</span>
+                </div>
+                <div class="vintage-bar-outline">
+                  <div class="vintage-bar-fill" id="detail-ev-bar-fill" style="width: 82%;"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="evidence-actions-row">
+              <button class="btn btn-success" onclick="reviewAction('accept')">Accept Evidence</button>
+              <button class="btn btn-error" onclick="reviewAction('reject')">Reject (Noise)</button>
+              <button class="btn btn-outline" style="grid-column: span 2;" onclick="reviewAction('reclassify')">Reclassify/Add Annotation</button>
+            </div>
+            
+            <div class="reclassify-container" id="reclassify-input-block" style="display:none;">
+              <label class="custom-select-label" style="display:block; margin-bottom: 8px;">Conservator Annotations / Category:</label>
+              <input type="text" id="annotation-input" placeholder="Enter custom notes (e.g. Scaffolding visible in contemporary view)" style="width:100%; padding:10px; border: 1px solid var(--border-sandstone); border-radius:4px; font-family:var(--font-sans); background: var(--bg-parchment); margin-bottom: 12px;">
+              <button class="btn btn-terracotta btn-sm" onclick="saveAnnotation()">Save Annotation</button>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      
+      <!-- SCREEN 6: PROVENANCE & UNCERTAINTY DISPLAY -->
+      <section id="provenance-view" class="view-container">
+        <div class="dossier-grid">
+          
+          <!-- Image Records List -->
+          <div class="provenance-table-card">
+            <div class="accession-stamp">Ledger Registries</div>
+            <h3 class="archive-card-title">Conservation Image Provenance Ledger</h3>
+            <p style="margin-bottom: 20px;">Auditable documentation for each photographic record, guaranteeing metadata integrity and heritage citation.</p>
+            
+            <div class="archival-table-container">
+              <table class="archival-table" id="provenance-ledger-table">
+                <thead>
+                  <tr>
+                    <th>Accession No</th>
+                    <th>Monument</th>
+                    <th>Source Collection</th>
+                    <th>Epoch</th>
+                    <th>Photographer</th>
+                    <th>License</th>
+                  </tr>
+                </thead>
+                <tbody id="provenance-table-body">
+                  <!-- Javascript populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Uncertainty Guidelines -->
+          <div class="uncertainty-guide-card">
+            <h3 class="archive-card-title">Registration Uncertainty Framework</h3>
+            <p>Our system operates under the <strong>Human-in-the-Loop review principle</strong>. Geometric and pixel difference confidence is classified into distinct trust bands:</p>
+            
+            <div class="tier-list">
+              <div class="tier-item trusted">
+                <div class="tier-name-row">
+                  <span class="tier-name">TRUSTED (High Confidence)</span>
+                  <span class="badge badge-success" style="font-size:0.6rem;">Inliers > 150</span>
+                </div>
+                <p class="tier-desc">Valid homography confirmed on the local structure plane. Low reprojection RMSE (< 2px). Suitable for direct difference analysis.</p>
+              </div>
+              
+              <div class="tier-item marginal">
+                <div class="tier-name-row">
+                  <span class="tier-name">MARGINAL (Medium Confidence)</span>
+                  <span class="badge badge-warning" style="font-size:0.6rem;">Inliers 80 - 150</span>
+                </div>
+                <p class="tier-desc">Satisfactory feature matching on flat facade but limited spatial coverage. Minor parallax or viewpoint displacement. Requires manual review validation.</p>
+              </div>
+              
+              <div class="tier-item untrusted">
+                <div class="tier-name-row">
+                  <span class="tier-name">UNTRUSTED (Low Confidence)</span>
+                  <span class="badge badge-error" style="font-size:0.6rem;">Inliers < 80</span>
+                </div>
+                <p class="tier-desc">Highly localized correspondences, degenerate matrices, or extreme lighting differences. Geometric analysis is suspended. Fallback landmarks requested.</p>
+              </div>
+              
+              <div class="tier-item unsupported">
+                <div class="tier-name-row">
+                  <span class="tier-name">UNSUPPORTED (Algorithm Failure)</span>
+                  <span class="badge" style="font-size:0.6rem; background:#eaeaea; color:#666;">Failed</span>
+                </div>
+                <p class="tier-desc">SIFT/LoFTR failure. Homography conditions degenerate (e.g. collapsed quad). Immediate manual intervention or viewpoint re-acquisition required.</p>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      
+    </main>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
