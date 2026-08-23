@@ -20,6 +20,37 @@ inliers; Sanchi gateway has 566 filtered matches and 358 inliers; Qutb's best
 matching pair has 103 filtered matches and 53 inliers but fails spatial-spread
 validation. Do not interpret match count alone as valid geometry.
 
+## Technical Pipeline
+
+```text
+Historical + modern imagery
+-> LoFTR matching
+-> geometric verification
+-> multi-pair robustness
+-> bounded trust-region registration
+-> valid comparison mask
+-> photometric normalization
+-> candidate visible-change extraction
+-> false-positive controls
+-> evidence strength + uncertainty
+-> human-review-ready candidate JSON
+```
+
+Candidate visible change is not confirmed structural damage. Unsupported
+geometry is rejected, uncertainty is retained in the exported evidence, and
+human review remains required.
+
+## Verified Results
+
+| Monument | Verified registration evidence | Review-evidence outcome |
+|---|---|---|
+| Humayun's Tomb | 519 filtered / 301 inliers; bounded trusted geometry | 8 candidates; `CHANGE_EVIDENCE_PIPELINE_VIABLE` |
+| Sanchi gateway | 566 filtered / 358 inliers; bounded registration sufficient | 11 candidates; `CHANGE_EVIDENCE_PIPELINE_VIABLE` |
+| Qutb Minar | 103 filtered / 53 inliers on best matching pair, but spatial-spread gate fails | zero candidates; unsupported geometry suppressed |
+
+The tracked verification JSON under `artifacts/verification/` is the source for
+these values.
+
 ## Setup
 
 ```bash
@@ -51,6 +82,14 @@ python src/registration/run_pipeline.py --monument all
 The runner preserves actual failure outcomes: invalid Qutb registrations return
 metrics and overlays, then write a `NO_CHANGE_EVIDENCE_GENERATED` export rather
 than fabricating candidates.
+
+- `humayun` regenerates the LoFTR baseline, multi-pair comparison, bounded
+  registration, candidate evidence, and Humayun audit.
+- `sanchi` runs its three selected pairs, gateway trust analysis, and candidate
+  evidence export.
+- `qutb` runs its three fixed pairs and writes the geometry-rejected hard-case
+  export.
+- `audit` validates and writes the cross-monument integration summary.
 
 ### Sanchi Sequence
 
@@ -105,6 +144,12 @@ No precision/recall/F1 claims are made because labelled ground truth is absent.
 Candidate evidence may reflect archival degradation, lighting, vegetation,
 occlusion, restoration, or residual viewpoint difference and requires human
 review.
+
+The three monuments are prototype case studies, not universal monument
+generalization. Perspective and parallax can invalidate registration; Qutb is
+the documented example. The next milestone is consumption of verified Person
+2/3 outputs by Person 4/backend and Person 5/frontend, followed by lead
+integration and PPT/demo packaging.
 
 See [CLAUDE.md](CLAUDE.md) for engineering/scientific rules and
 [TEAMMATES.MD](TEAMMATES.MD) for team handoff context.

@@ -18,6 +18,10 @@
 > integration: Person 4 backend/data consumption, Person 5 UI, and presentation
 > packaging. Do not redo completed Humayun experiments.
 
+> **Current dependency.** Verified Person 2/3 outputs flow to Person 4/backend
+> consumption and Person 5/frontend consumption, then to lead integration and
+> PPT/demo/project packaging. Backend/frontend integration is not yet complete.
+
 ---
 
 # 1. Hackathon Context
@@ -328,7 +332,7 @@ Its main rules:
 - preprocessing must be reproducible;
 - geometric validity must be checked explicitly;
 - separate matching success from geometry success;
-- do not implement the next experiment until asked;
+- do not rerun or alter completed Person 2/3 experiments unless reproducibility verification requires it;
 - aggressively reject unrelated scope.
 
 If Claude ever says `CLAUDE.md` is empty, verify the actual saved file in the repo instead of trusting stale Claude context.
@@ -502,7 +506,7 @@ This confirms that the architectural correspondence information was present in t
 
 ---
 
-# 10. Current Limitation Discovered After LoFTR
+# 10. Historical Limitation Discovered After Initial LoFTR
 
 Matching is now strong.
 
@@ -540,14 +544,15 @@ This is NOT yet a failure of the overall project.
 
 ---
 
-# 11. Historical Next-Step Decision (Superseded)
+# 11. Historical Pair-Selection Decision (Completed)
 
 Originally the next step was going to be:
 
 - trust-region estimation;
 - local/piecewise registration.
 
-But that decision was **paused**.
+That decision was paused pending a small multi-pair check, which has now been
+completed.
 
 ## Reason
 
@@ -561,7 +566,7 @@ or
 
 B. we simply selected a mediocre modern viewpoint.
 
-## Current correct next step
+## Historical next step and completed outcome
 
 # **MULTI-PAIR LOFTR ROBUSTNESS / PAIR-SELECTION TEST**
 
@@ -588,6 +593,9 @@ Archival A2
 Approximately 4–5 pairs are enough.
 
 Do NOT build a huge dataset.
+
+Actual outcome: `LOCAL_GEOMETRY_STILL_REQUIRED`. The best Humayun pair still
+required bounded/local trust-region registration before change evidence.
 
 ---
 
@@ -639,9 +647,9 @@ Claude previously started designing a trust-region experiment based on:
 - cross-validation
 - TRUSTED / MARGINAL / UNTRUSTED / UNSUPPORTED tiers
 
-This was **not completed** because the experiment order changed.
-
-Do NOT resume it until the multi-pair test determines whether pair selection is enough.
+This was completed after the multi-pair result. The final outcome was
+`BOUNDED_REGISTRATION_SUFFICIENT_FOR_CHANGE_EVIDENCE`; trust tiers now gate
+candidate extraction.
 
 Also note:
 
@@ -653,7 +661,9 @@ Therefore any future trust-region method must not assume every high-confidence R
 
 # 14. Historical Change-Detection Plan (Completed)
 
-Do not implement change detection until registration support is sufficiently trustworthy.
+This gate has been satisfied only inside trusted/recoverable bounded regions.
+Candidate visible-change extraction is complete for Humayun and Sanchi, while
+Qutb remains intentionally suppressed because its supplied geometry is invalid.
 
 Why:
 
@@ -667,7 +677,7 @@ A poor full-frame warp would cause:
 
 to appear as giant false “changes”.
 
-## Planned later pipeline
+## Implemented pipeline
 
 ```text
 registered pair
@@ -775,28 +785,36 @@ Exact teammate names are not recorded here yet, but the intended responsibility 
 
 | Role | Primary responsibility |
 |---|---|
-| Person 1 — Lead / Integration | architecture, Git, integration, scope control, Claude workflow |
-| Person 2 — Registration CV | LoFTR / geometry / registration experiments |
-| Person 3 — Change Intelligence | later change maps, confidence, evaluation |
-| Person 4 — Data / Backend | image provenance, metadata, APIs/storage later |
-| Person 5 — Frontend | dashboard, timeline, evidence review UI later |
-| Person 6 — Research / Validation / Pitch | source provenance, evaluation, PPT, demo narrative |
+| Person 1 — Lead / Integration | architecture, Git, integration, scope control, final prototype | integration in progress |
+| Person 2 — Registration CV | LoFTR, geometry, registration experiments, bounded/local registration | complete |
+| Person 3 — Change Intelligence | candidate evidence, evidence strength, uncertainty, false-positive analysis, evaluation | complete |
+| Person 4 — Data / Backend | provenance, metadata, evidence storage/APIs | separate backend integration dependency |
+| Person 5 — Frontend | dashboard, timeline, comparison, evidence-review UI | integration in progress |
+| Person 6 — Research / Validation / Pitch | research, evaluation narrative, PPT/demo material | in progress |
 
 ## Current teammate involvement
 
-At the present technical-feasibility stage:
+At the present integration stage:
 
-### Active now
-- Lead/integration
-- CV registration person
-- Data/provenance person
+### Completed Person 2/3 contribution
 
-### Limited / preparation only
-- Frontend person: wireframes only, do not build full product yet
-- Change-detection person: prepare methodology/evaluation, do not build on invalid registration
-- Pitch/research person: collect provenance, conservation evidence, prior-art framing
+- Humayun: SIFT failure -> improved SIFT failure -> LoFTR -> multi-pair
+  analysis -> `LOCAL_GEOMETRY_STILL_REQUIRED` -> bounded trust regions ->
+  `BOUNDED_REGISTRATION_SUFFICIENT_FOR_CHANGE_EVIDENCE` -> candidate evidence
+  -> `CHANGE_EVIDENCE_PIPELINE_VIABLE`.
+- Sanchi: reproducible eastern-gateway workflow completed with 566 filtered
+  correspondences, 358 inliers, bounded registration sufficient, and 11
+  human-review candidates.
+- Qutb: supplied viewpoints fail fixed registration validity gates; unsupported
+  change evidence is intentionally suppressed rather than manufactured.
 
-Once multi-pair LoFTR registration is validated and the geometric strategy is frozen, the full team can parallelize aggressively.
+### Active integration work
+
+- Lead: integrate verified outputs into the final prototype.
+- Person 4: consume provenance/metadata/evidence exports in the existing
+  backend workstream.
+- Person 5: consume candidate, trust, and hard-case outputs in the UI.
+- Person 6: package evaluation narrative, PPT, demo, and limitations.
 
 ---
 
@@ -923,33 +941,16 @@ This is far stronger than a generic “AI architecture” slide.
 
 ---
 
-# 22. Historical Exact Next Action (Superseded)
+# 22. Current Exact Next Action
 
-## Do this next
-
-1. Inspect `data/humayun/`.
-2. Confirm how many archival + modern Humayun images currently exist.
-3. If only one archival and one modern image exist:
-   - add 2–3 sensible modern viewpoints;
-   - ideally add one more archival viewpoint.
-4. Use Claude Code for the **multi-pair LoFTR experiment**.
-5. Keep the existing LoFTR thresholds/model fixed.
-6. Rank pairs by geometric quality.
-7. Decide:
-   - `PAIR_SELECTION_IMPROVES_GEOMETRY`
-   - or `LOCAL_GEOMETRY_STILL_REQUIRED`
-
-## Do NOT do yet
-
-- trust-region implementation
-- local warp implementation
-- change detection
-- frontend/backend build
-- portfolio priority engine
+1. Person 4 consumes the verified provenance/registration/evidence exports.
+2. Person 5 consumes the same outputs, including Qutb's geometry-rejected state.
+3. Lead integrates the end-to-end prototype without changing Person 2/3 science.
+4. Person 6 packages evaluation, limitations, PPT, and demo material.
 
 ---
 
-# 23. Claude Code Cue — Next Task
+# 23. Historical Claude Code Cue — Pair-Selection Task (Completed)
 
 **Claude SHOULD be used** once the additional Humayun images are in `data/`.
 
@@ -1004,7 +1005,8 @@ For future ChatGPT sessions:
 
 When this file is supplied to a new ChatGPT session, continue from:
 
-> **Technical feasibility: multi-pair Humayun LoFTR robustness test.**
+> **Integration: consume verified three-monument Person 2/3 outputs without
+> rerunning or changing completed CV/change-intelligence experiments.**
 
 Do NOT restart:
 
@@ -1016,60 +1018,36 @@ Do NOT restart:
 
 Those are already complete.
 
-The immediate strategic question is:
-
-> **Does better archival-modern pair selection materially improve geometric support enough to avoid local registration, or is local geometry genuinely required?**
-
-That is the next decision gate.
+The immediate strategic dependency is Person 4/backend and Person 5/frontend
+consumption of the tracked verification artifacts and reproducible exports.
 
 ---
 
 # 26. Current Status Summary
 
 ```text
-Problem selection
-    ✅ Heritage selected
+Humayun Person 2/3 pipeline
+    ✅ completed and reproducible
 
-Prior-art / novelty framing
-    ✅ done
+Sanchi gateway Person 2/3 pipeline
+    ✅ completed and reproducible
 
-Dataset reconnaissance
-    ✅ enough for feasibility
+Qutb supplied-viewpoint hard case
+    ✅ documented; geometry rejected and no candidates generated
 
-Vanilla SIFT
-    ❌ failed
+Person 4/backend consumption
+    ⏭ integration dependency
 
-Improved classical SIFT
-    ❌ failed
+Person 5/frontend consumption
+    ⏭ integration in progress
 
-LoFTR cross-era correspondence
-    ✅ strong success
-
-Global homography on current pair
-    ✅ valid on facade
-    ⚠ limited vertical support / parallax at dome + ground
-
-Multi-pair viewpoint robustness
-    ⏭ NEXT
-
-Trust-region/local registration
-    ⏸ paused until pair robustness result
-
-Change detection
-    ⏸ not started
-
-Frontend/backend/product integration
-    ⏸ not started
-
-3-monument full demo
-    ⏸ later
-
-PPT / demo video / project description
-    ⏸ later but must be planned throughout
+Lead prototype integration and PPT/demo packaging
+    ⏭ current milestone
 ```
 
 ---
 
 # END OF HANDOFF
 
-**Next technical gate: MULTI-PAIR HUMAYUN LoFTR ROBUSTNESS TEST.**
+**Current milestone: integrate verified Person 2/3 outputs into the end-to-end
+prototype and presentation package.**
