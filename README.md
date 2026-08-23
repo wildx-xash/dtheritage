@@ -96,10 +96,61 @@ Runtime names are lowercase, deterministic pair folders. The raw Humayun
 embedded-space filename was normalized to `humayun_m04_2015.jpg`; the manifest
 now correctly references `humayun_h02_1858.jpg`.
 
+## Supabase Backend and Dashboard
+
+The verified portfolio data is available to the static dashboard through
+Supabase. The CV pipeline remains the source of truth: Supabase stores the
+tracked verification exports for UI consumption and review, and does not run
+LoFTR or change detection.
+
+### Database model
+
+| Table | Purpose |
+|---|---|
+| `monuments` | Three-monument portfolio and registration status |
+| `images` | Image provenance, source URLs, licensing, and storage paths |
+| `registrations` | Verified LoFTR and geometric-validation results |
+| `evidence_candidates` | Candidate visible-change evidence (8 Humayun, 11 Sanchi, 0 Qutb) |
+| `evidence_reviews` | Future human accept/reject/reclassify decisions |
+
+Row Level Security is enabled. The dashboard is allowed to read scientific
+outputs; no service-role credential is used by the browser.
+
+### Initial import
+
+Create a local `.env.local` file in the repository root:
+
+```text
+SUPABASE_URL=https://<project-ref>.supabase.co
+SUPABASE_ANON_KEY=<publishable-or-anon-key>
+SUPABASE_SERVICE_ROLE_KEY=<secret-key-for-local-import-only>
+```
+
+`.env.local` is ignored by Git. Never commit it or expose the service-role key.
+After the Supabase tables and read policies are created, import the tracked
+records with:
+
+```bash
+python scripts/seed_supabase.py
+```
+
+The script reads `data/source_data/Data/manifest.csv` and
+`artifacts/verification/`, then imports image metadata, three registrations,
+and 19 candidate records. Expected candidate totals are Humayun 8, Sanchi 11,
+and Qutb 0.
+
+### Dashboard configuration
+
+Set the public Project URL and anon/publishable key in
+`frontend/supabase-config.js`. These values are used only for read requests
+under RLS. Start the dashboard with a static server (for example VS Code Live
+Server), then open `frontend/index.html`.
+
 ## Scope and Limitations
 
-Only Person 2/3 CV work is implemented here. Backend/data architecture remains
-Person 4's responsibility; frontend and dashboard work remain separate.
+Person 2/3 CV work, the Supabase data layer, and the static dashboard are
+implemented. Backend ownership remains Person 4's responsibility; the current
+integration is deliberately limited to verified outputs and human-review data.
 
 No precision/recall/F1 claims are made because labelled ground truth is absent.
 Candidate evidence may reflect archival degradation, lighting, vegetation,

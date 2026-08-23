@@ -8,15 +8,25 @@
 >
 > **Important:** The project is already past ideation and early feasibility. Do **not** restart from broad brainstorming or generic prior-art research unless a new technical result forces it.
 
-> **Current execution status (authoritative, 2026-08-22).** Person 2/3 work is
+> **Current execution status (authoritative, 2026-08-23).** Person 2/3 work is
 > complete: Humayun reached `LOCAL_GEOMETRY_STILL_REQUIRED`, then
 > `BOUNDED_REGISTRATION_SUFFICIENT_FOR_CHANGE_EVIDENCE`, then
 > `CHANGE_EVIDENCE_PIPELINE_VIABLE`; Sanchi's gateway workflow is complete;
 > Qutb is a documented hard case with no permitted change evidence. Historical
 > "paused", "not started", and "next experiment" sections below are retained
 > as experiment history, not current instructions. Remaining work is team
-> integration: Person 4 backend/data consumption, Person 5 UI, and presentation
-> packaging. Do not redo completed Humayun experiments.
+> integration: Person 4's Supabase data layer and Person 5's static dashboard
+> are now connected to the verified portfolio records. The next work is review
+> persistence, asset storage/provenance completion, presentation packaging, and
+> final end-to-end testing. Do not redo completed Humayun experiments.
+
+> **Supabase integration status.** The `monuments`, `images`,
+> `registrations`, `evidence_candidates`, and `evidence_reviews` tables exist
+> with RLS enabled. `scripts/seed_supabase.py` imports the tracked artifact
+> bundle using a local, Git-ignored `.env.local`. The browser receives only the
+> Project URL and anon/publishable key in `frontend/supabase-config.js`; never
+> expose the service-role key. The dashboard must preserve 8 Humayun candidates,
+> 11 Sanchi candidates, and Qutb's rejected registration with zero candidates.
 
 ---
 

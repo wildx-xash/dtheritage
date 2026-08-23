@@ -471,7 +471,7 @@ function formatMatrix(matrix) {
 }
 
 function evidenceForUi(candidate, index) {
-  const [x, y, width, height] = candidate.bbox_xywh_in_inference_image;
+  const [x, y, width, height] = candidate.bbox_xywh_in_inference_image || candidate.bbox_xywh;
   return {
     id: candidate.candidate_id,
     title: `Candidate visual difference #${index + 1}`,
@@ -486,6 +486,36 @@ function evidenceForUi(candidate, index) {
   };
 }
 
+async function loadVerificationData(monumentId, files) {
+  const config = window.SUPABASE_CONFIG || {};
+  if (config.url && config.anonKey) {
+    const headers = { apikey: config.anonKey, Authorization: `Bearer ${config.anonKey}` };
+    const base = config.url.replace(/\/$/, '') + '/rest/v1/';
+    const registrationResponse = await fetch(
+      `${base}registrations?monument_id=eq.${monumentId}&select=*&order=created_at.desc&limit=1`,
+      { headers }
+    );
+    const candidateResponse = await fetch(
+      `${base}evidence_candidates?monument_id=eq.${monumentId}&select=*&order=candidate_id`,
+      { headers }
+    );
+    if (!registrationResponse.ok || !candidateResponse.ok) {
+      throw new Error('Supabase data request failed. Check the project URL, anon key, and read policies.');
+    }
+    const registrations = await registrationResponse.json();
+    const candidates = await candidateResponse.json();
+    if (!registrations.length) throw new Error(`No Supabase registration found for ${monumentId}.`);
+    return { metrics: registrations[0].metrics, evidence: { candidates } };
+  }
+
+  const base = `data/verification/${monumentId}/`;
+  const [metrics, evidence] = await Promise.all(files.map(file => fetch(base + file).then(response => {
+    if (!response.ok) throw new Error(`Unable to load ${file}`);
+    return response.json();
+  })));
+  return { metrics, evidence };
+}
+
 async function loadVerificationBundle() {
   const sources = {
     humayun: ['registration_metrics_pair02.json', 'candidate_evidence.json'],
@@ -494,11 +524,7 @@ async function loadVerificationBundle() {
   };
   try {
     await Promise.all(Object.entries(sources).map(async ([monumentId, files]) => {
-      const base = `data/verification/${monumentId}/`;
-      const [metrics, evidence] = await Promise.all(files.map(file => fetch(base + file).then(response => {
-        if (!response.ok) throw new Error(`Unable to load ${file}`);
-        return response.json();
-      })));
+      const { metrics, evidence } = await loadVerificationData(monumentId, files);
       const ransac = metrics.ransac || {};
       const geometry = (metrics.geometric_error || {}).over_ransac_inliers || {};
       const homography = metrics.homography || {};
